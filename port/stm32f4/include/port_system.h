@@ -246,4 +246,34 @@ void port_system_gpio_exti_enable(uint8_t pin, uint8_t priority, uint8_t subprio
  */
 void port_system_gpio_exti_disable(uint8_t pin);
 
+bool port_system_gpio_read (GPIO_TypeDef *p_port, uint8_t pin);
+
+/**
+ * @brief Read the digital value of a GPIO.
+ *
+ * @param p_port Port of the GPIO (CMSIS struct like)
+ * @param pin	Pin/line of the GPIO (index from 0 to 15)
+ * @return true if the GPIO was HIGH
+ * @return false if the GPIO was LOW
+*/
+
+void port_system_gpio_write	(GPIO_TypeDef *p_port, uint8_t pin, bool value);	
+
+/**
+ * @brief Write a digital value in a GPIO automatically.
+ *
+ * @param p_port Port of the GPIO (CMSIS struct like)
+ * @param pin	Pin/line of the GPIO (index from 0 to 15)
+ * @param value Boolen value to set de GPIO to HIGH(1,true) or LOW(0,false)
+ * @retval None
+*/
+
+void port_system_gpio_toggle (GPIO_TypeDef *p_port, uint8_t pin);
+/**
+ * @brief Toggle the value of a GPIO
+ *
+ * @param p_port Port of the GPIO (CMSIS struct like)
+ * @param pin	Pin/line of the GPIO (index from 0 to 15)
+ * @retval None
+*/
 #endif /* PORT_SYSTEM_H_ */

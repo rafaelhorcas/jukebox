@@ -124,12 +124,12 @@ size_t port_system_init()
 //------------------------------------------------------
 uint32_t port_system_get_millis()
 {
-  return 0;
+  return msTicks ; /* ms */
 }
 
 void port_system_set_millis(uint32_t ms)
 {
-  
+  msTicks = ms;
 }
 
 void port_system_delay_ms(uint32_t ms)
@@ -249,12 +249,41 @@ void port_system_gpio_exti_disable(uint8_t pin)
 void port_system_gpio_config_alternate(GPIO_TypeDef *p_port, uint8_t pin, uint8_t alternate)
 {
   uint32_t base_mask = 0x0FU;
-  uint32_t displacement = (pin % 8) * 4;
+  uint32_t displacement = (pin % 8) * 4;  
 
   p_port->AFR[(uint8_t)(pin / 8)] &= ~(base_mask << displacement);
   p_port->AFR[(uint8_t)(pin / 8)] |= (alternate << displacement);
 }
 
+bool port_system_gpio_read (GPIO_TypeDef *p_port, uint8_t pin) {
+  // Se define la máscara en función del parámetro pin
+  uint32_t MASK = BIT_POS_TO_MASK(pin); 
+  // Se accede al registro IDR de p_port y se aplica la máscara
+  bool value = (bool)(p_port -> IDR & MASK);
+  // Se devuelve el valor del bit del IDR asociado al puerto solicitado
+  return value;
+}
+
+
+void port_system_gpio_write	(GPIO_TypeDef *p_port, uint8_t pin, bool value){
+  // Se define la máscara en función del parámetro pin
+  uint32_t MASK = BIT_POS_TO_MASK(pin);
+  // Si value = 1 se activa el bit menos significativo en el registro ODR relativo al pin utilizado
+  if (value) {
+     p_port -> BSRR = MASK; 
+  }
+  // Si value = 0 se activa el bit más significativo en el registro ODR relativo al pin utilizado
+  else {
+    p_port -> BSRR = MASK << 16;
+  }
+}
+
+void port_system_gpio_toggle (GPIO_TypeDef *p_port, uint8_t pin){
+ // Se toma como valor el valor leido
+ bool value = port_system_gpio_read(p_port, pin);
+ // Se escribe el valor opuesto al leido
+ port_system_gpio_write(p_port, pin, !value);
+}
 // ------------------------------------------------------
 // POWER RELATED FUNCTIONS
 // ------------------------------------------------------

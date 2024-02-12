@@ -25,6 +25,9 @@
  * @warning **The variable `msTicks` must be declared volatile!** Just because it is modified by a call of an ISR, in order to avoid [*race conditions*](https://en.wikipedia.org/wiki/Race_condition). **Added to the definition** after *static*.
  *
  */
+
 void SysTick_Handler(void)
 {
+    uint32_t tickstart = port_system_get_millis();
+    port_system_set_millis(tickstart + 1);
 }
