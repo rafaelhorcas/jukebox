@@ -21,8 +21,12 @@
 /* Defines and enums ----------------------------------------------------------*/
 /* Defines */
 #define BUTTON_0_ID 0x00
-#define BUTTON_0_GPIO
-#define BUTTON_0_PIN 
+
+/* TODO: revisar estos 2 valores*/
+#define BUTTON_0_GPIO 0x00
+#define BUTTON_0_PIN 0x00
+/* TODO: revisar estos 2 valores*/
+
 #define BUTTON_0_DEBOUNCE_TIME_MS 0x96
 
 /* Typedefs --------------------------------------------------------------------*/
