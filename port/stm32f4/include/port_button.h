@@ -21,13 +21,13 @@
 /* Defines and enums ----------------------------------------------------------*/
 /* Defines */
 #define BUTTON_0_ID 0x00
-
-/* TODO: revisar estos 2 valores*/
-#define BUTTON_0_GPIO 0x00
-#define BUTTON_0_PIN 0x00
-/* TODO: revisar estos 2 valores*/
-
+#define BUTTON_0_GPIO GPIOC
+#define BUTTON_0_PIN 0x0D
 #define BUTTON_0_DEBOUNCE_TIME_MS 0x96
+
+/* La placa tiene 8 puertos A-H. Cada uno tiene 16 lineas/pines. Cada puerto tiene un registros de 32bits, esto es, 2 bits para cada pin del puerto.
+En nuestro caso, el botón de usuario, B1, usa Puerto C, pin 13.
+*/
 
 /* Typedefs --------------------------------------------------------------------*/
 typedef struct
