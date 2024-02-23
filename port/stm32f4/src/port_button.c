@@ -23,7 +23,7 @@ void port_button_init(uint32_t button_id)
     GPIO_TypeDef *p_port = buttons_arr[button_id].p_port;
     uint8_t pin = buttons_arr[button_id].pin;
     port_system_gpio_config(p_port, pin, GPIO_MODE_IN, GPIO_PUPDR_NOPULL);
-    port_system_gpio_config_exti(p_port, pin, GPIO_MODE_IN);
+    port_system_gpio_config_exti(p_port, pin, TRIGGER_BOTH_EDGE | TRIGGER_ENABLE_INTERR_REQ);
     port_system_gpio_exti_enable(pin, 1, 0);
 }
 
