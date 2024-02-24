@@ -1,10 +1,10 @@
-# Título del proyecto
+# Jukebox
 
 
 ## Authors
 
-* **Alumno 1** - email: [alumno@alumno.es](mailto:alumno@alumno.es)
-* **Alumno 2** - email: [alumno@alumno.es](mailto:alumno@alumno.es)
+* Rafael Horcas Mateo - email: [r.horcasm@alumnos.upm.es](mailto:r.horcasm@alumnos.upm.es)
+* Víctor Mendizábal Gimeno - email: [v.mendizabal@alumnos.upm.es](mailto:v.mendizabal@alumnos.upm.es)
 
 
 Ponga una breve descripción del proyecto **aquí** en castellano e inglés.

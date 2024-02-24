@@ -1,8 +1,8 @@
 /**
  * @file fsm_usart.h
  * @brief Header for fsm_usart.c file.
- * @author r.horcasm@alumnos.upm.es
- * @author v.mendizabal@alumnos.upm.es
+ * @author Rafael Horcas Mateo (r.horcasm@alumnos.upm.es)
+ * @author Victor Mendizabal Gimeno (v.mendizabal@alumnos.upm.es)
  * @date fecha
  */
 
@@ -22,20 +22,27 @@
 
 /* Defines and enums ----------------------------------------------------------*/
 /* Enums */
+/**
+ * @brief Enumerator for the USART finite state machine.
+ * This enumerator defines the different states that the USART finite state machine can be in. Each state represents a specific condition or step in the USART communication process.
+ */
 enum FSM_USART {
-     WAIT_DATA = 0,
-     SEND_DATA
+     WAIT_DATA = 0, /*!<Starting state. Also comes here when data has been send or read*/
+     SEND_DATA      /*!<State to send data*/
 };
+
 /* Typedefs --------------------------------------------------------------------*/
+/**
+ * @brief Structure to define the USART FSM.
+ */
 typedef struct
 {
-    fsm_t f;
-    bool data_received;
-    char in_data [USART_INPUT_BUFFER_LENGTH];
-    char out_data [USART_OUTPUT_BUFFER_LENGTH];
-    uint8_t usart_id;
+    fsm_t f;                                    /*!<USART FSM*/
+    bool data_received;                         /*!<Flag to indicate that a data has been received*/
+    char in_data [USART_INPUT_BUFFER_LENGTH];   /*!<Input data*/
+    char out_data [USART_OUTPUT_BUFFER_LENGTH]; /*!<Output data*/
+    uint8_t usart_id;                           /*!<USART ID. Must be unique*/
 } fsm_usart_t ;
-
 
 /* Function prototypes and explanation -------------------------------------------------*/
 
@@ -55,7 +62,7 @@ void fsm_usart_init (fsm_t *p_this, uint32_t usart_id);
 
 /**
  * @brief Check if data has been received.
- * @param p_this	Pointer to an fsm_t struct than contains an fsm_usart_t struct
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct
  * @return true
  * @return false
 */
@@ -63,8 +70,8 @@ bool fsm_usart_check_data_received (fsm_t *p_this);
 
 /**
  * @brief Get the data received.
- * @param p_this	Pointer to an fsm_t struct than contains an fsm_usart_t struct
- * @param p_data	Pointer to the array where the data will be copied from the in_data array
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct
+ * @param p_data Pointer to the array where the data will be copied from the in_data array
 */
 void fsm_usart_get_in_data (fsm_t *p_this, char *p_data);
 
@@ -83,21 +90,20 @@ void fsm_usart_reset_input_data (fsm_t *p_this);
 
 /**
  * @brief Check if the USART FSM is active, or not.
- * @param p_this	Pointer to an fsm_t struct than contains an fsm_usart_t struct
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct
  * @return true
  * @return false
 */
 bool fsm_usart_check_activity (fsm_t *p_this);
 
 /**
- * @brief
- * @param
- * @return
+ * @brief Disable the USART RX interrupt.
+ * @param p_this
 */
 void fsm_usart_disable_rx_interrupt (fsm_t *p_this);
 
 /**
- * @brief Disable the USART RX interrupt.
+ * @brief Disable the USART TX interrupt.
  * @param p_this
 */
 void fsm_usart_disable_tx_interrupt (fsm_t *p_this);
