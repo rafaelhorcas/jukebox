@@ -3,7 +3,7 @@
  * @brief Header for fsm_usart.c file.
  * @author Rafael Horcas Mateo (r.horcasm@alumnos.upm.es)
  * @author Victor Mendizabal Gimeno (v.mendizabal@alumnos.upm.es)
- * @date fecha
+ * @date 23/02/2024
  */
 
 #ifndef FSM_USART_H_
