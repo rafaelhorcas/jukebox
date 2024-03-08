@@ -4,7 +4,7 @@
  * This file defines an internal struct which contains the HW information of the button.
  * @author Rafael Horcas Mateo (r.horcasm@alumnos.upm.es)
  * @author Victor Mendizabal Gimeno (v.mendizabal@alumnos.upm.es)
- * @date fecha 16/02/2024
+ * @date fecha 16/02/2024 
  */
 
 /* Includes ------------------------------------------------------------------*/

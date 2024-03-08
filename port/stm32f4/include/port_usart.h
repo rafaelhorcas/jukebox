@@ -3,7 +3,7 @@
  * @brief Header for port_usart.c file.
  * @author Rafael Horcas Mateo (r.horcasm@alumnos.upm.es)
  * @author Victor Mendizabal Gimeno (v.mendizabal@alumnos.upm.es)
- * @date 01/03/2024
+ * @date fecha 01/03/2024
  */
 #ifndef PORT_USART_H_
 #define PORT_USART_H_

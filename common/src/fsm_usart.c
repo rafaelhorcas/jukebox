@@ -148,8 +148,8 @@ void fsm_usart_reset_input_data (fsm_t *p_this){
 }
 
 
-/**bool fsm_usart_check_activity (fsm_t *p_this){
-    // fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
+/*bool fsm_usart_check_activity (fsm_t *p_this){
+    fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
 }
 */
 
@@ -158,18 +158,15 @@ void fsm_usart_disable_rx_interrupt (fsm_t *p_this){
     port_usart_disable_rx_interrupt(p_fsm -> usart_id);
 }
 
-
 void fsm_usart_disable_tx_interrupt (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
     port_usart_disable_tx_interrupt(p_fsm -> usart_id);
 }
 
-
 void fsm_usart_enable_rx_interrupt (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
     port_usart_enable_rx_interrupt(p_fsm -> usart_id);
 }
-
 
 void fsm_usart_enable_tx_interrupt (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
