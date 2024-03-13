@@ -41,6 +41,8 @@ void port_usart_init(uint32_t usart_id){
     uint8_t pin_rx = usart_arr[usart_id].pin_rx;
     uint8_t alt_func_tx = usart_arr[usart_id].alt_func_tx;
     uint8_t alt_func_rx = usart_arr[usart_id].alt_func_rx;
+    char input_buffer = usart_arr[usart_id].input_buffer;
+    char output_buffer = usart_arr[usart_id].output_buffer;
 
     port_system_gpio_config(p_port_tx, pin_tx, GPIO_MODE_ALTERNATE, GPIO_PUPDR_PUP);
     port_system_gpio_config(p_port_rx, pin_rx, GPIO_MODE_ALTERNATE, GPIO_PUPDR_PUP);
@@ -54,10 +56,22 @@ void port_usart_init(uint32_t usart_id){
         NVIC_SetPriority(USART3_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 2, 0));
         NVIC_EnableIRQ(USART3_IRQn);
     }
-    // 416,66 USART_BRR 
+    //  STOP esta en CR2, Paridad PCE en USART_CR1.
+    // 416,66 USART_BRR, bits 15:4 para mantisa y 3:0 fraccion
+
+    //Habilitar reloj de la USART3. No se si falta por habilitar el reloj de la GPIO antes
     if (p_usart == USART3){
         RCC -> AHB1ENR |= RCC_APB1ENR_USART3EN ;
     }
+
+    // Se activa/desactiva la USART con el bit UE del registro  USART_CR1
+    // Explicado en pag 97 libro
+
+
+    
+    _reset_buffer(input_buffer, USART_INPUT_BUFFER_LENGTH);
+    _reset_buffer(output_buffer, USART_OUTPUT_BUFFER_LENGTH);
+
 }
 
 void port_usart_get_from_input_buffer(uint32_t usart_id, char *p_buffer){
@@ -101,6 +115,7 @@ void port_usart_store_data(uint32_t usart_id){
             usart_arr[usart_id].i_idx = 0;
         }
         // ni idea xddd
+
     }
     else {
         usart_arr[usart_id].read_complete = true;
