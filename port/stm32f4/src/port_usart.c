@@ -64,9 +64,10 @@ void port_usart_init(uint32_t usart_id){
     // 6. Enable TX & RX
     USART3 -> CR1 &= ~(USART_CR1_TE | USART_CR1_RE);
     // 7. Disable TX & RX Interruptions
-    USART3 -> CR1 &= ~(USART_CR1_TXEIE | USART_CR1_RXNEIE);
+    port_usart_disable_rx_interrupt(usart_id);
+    port_usart_disable_tx_interrupt(usart_id);
     // 8. Clear flag RXNE
-    USART3 -> SR = 0;
+    USART3 -> SR &= ~ USART_SR_RXNE;
     // 9, 10. Enable USART interrupts globally
     if (p_usart == USART3)
     {
