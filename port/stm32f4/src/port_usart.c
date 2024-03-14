@@ -92,7 +92,7 @@ bool port_usart_get_txr_status(uint32_t usart_id){
 
 void port_usart_copy_to_output_buffer(uint32_t usart_id, char *p_data, uint32_t length){
     port_usart_hw_t p_usart = usart_arr[usart_id];
-    memcpy(p_usart.input_buffer, p_data, length);
+    memcpy(p_usart.output_buffer, p_data, length);
 }
 
 void port_usart_reset_input_buffer(uint32_t usart_id){

@@ -36,7 +36,7 @@ static bool check_data_rx (fsm_t *p_this){
 */
 static bool check_data_tx (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
-    if (p_fsm -> out_data[0] != EMPTY_BUFFER_CONSTANT) {
+    if (p_fsm -> out_data != EMPTY_BUFFER_CONSTANT) {
         return true;
     } 
     return false;
