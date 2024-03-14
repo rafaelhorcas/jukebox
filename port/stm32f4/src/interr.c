@@ -51,11 +51,4 @@ void EXTI15_10_IRQHandler ( void ){
     EXTI -> PR |= BIT_POS_TO_MASK (buttons_arr[BUTTON_0_ID].pin); 
 }
 
-/**
- * @brief This function handles Px10-Px15 global interrupts.
- * First, this function identifies the line/ pin which has raised the interruption. Then, perform the desired action. Before leaving it cleans the interrupt pending register. 
- */
-void EXTI15_10_IRQHandler( void ){
-
-}
 

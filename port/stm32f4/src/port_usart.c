@@ -20,9 +20,7 @@
  * 
  */
 port_usart_hw_t usart_arr[] = {
-    [USART_0_ID] = {.p_usart = USART_0, .p_port_tx = USART_0_GPIO_TX, .p_port_rx = USART_0_GPIO_RX, .pin_tx= USART_0_PIN_TX, .pin_rx= USART_0_PIN_RX, .alt_func_tx = USART_0_AF_TX,
-                    .alt_func_rx = USART_0_AF_RX, .input_buffer = USART_INPUT_BUFFER_LENGTH, .read_complete = false, .write_complete = false,
-                    .i_idx = 0, .output_buffer = USART_OUTPUT_BUFFER_LENGTH, .o_idx = 0}
+    [USART_0_ID] = {.p_usart = USART_0, .p_port_tx = USART_0_GPIO_TX, .p_port_rx = USART_0_GPIO_RX, .pin_tx= USART_0_PIN_TX, .pin_rx= USART_0_PIN_RX, .alt_func_tx = USART_0_AF_TX, .alt_func_rx = USART_0_AF_RX, .input_buffer = USART_INPUT_BUFFER_LENGTH, .read_complete = false, .write_complete = false, .i_idx = 0, .output_buffer = USART_OUTPUT_BUFFER_LENGTH, .o_idx = 0},
 };
 
 /* Private functions */
@@ -41,15 +39,15 @@ void port_usart_init(uint32_t usart_id){
     uint8_t pin_rx = usart_arr[usart_id].pin_rx;
     uint8_t alt_func_tx = usart_arr[usart_id].alt_func_tx;
     uint8_t alt_func_rx = usart_arr[usart_id].alt_func_rx;
-    char input_buffer = usart_arr[usart_id].input_buffer;
-    char output_buffer = usart_arr[usart_id].output_buffer;
+    char *input_buffer = usart_arr[usart_id].input_buffer;
+    char *output_buffer = usart_arr[usart_id].output_buffer;
 
     //1. Configuración USART TX y RX
     port_system_gpio_config(p_port_tx, pin_tx, GPIO_MODE_ALTERNATE, GPIO_PUPDR_PUP);
     port_system_gpio_config(p_port_rx, pin_rx, GPIO_MODE_ALTERNATE, GPIO_PUPDR_PUP);
     //2. Configuración alternativa de USART TX Y RX
-    port_system_gpio_config_alternate(p_port_tx, pin_tx, GPIO_MODE_ALTERNATE);
-    port_system_gpio_config_alternate(p_port_rx, pin_rx, GPIO_MODE_ALTERNATE);
+    port_system_gpio_config_alternate(p_port_tx, pin_tx, alt_func_tx);
+    port_system_gpio_config_alternate(p_port_rx, pin_rx, alt_func_rx);
     // 3. Habilitar reloj de la USART3. (No se si falta por habilitar el reloj de la GPIO antes)
     if (p_usart == USART3){
         RCC -> AHB1ENR |= RCC_APB1ENR_USART3EN ;
