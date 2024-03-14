@@ -44,31 +44,40 @@ void port_usart_init(uint32_t usart_id){
     char input_buffer = usart_arr[usart_id].input_buffer;
     char output_buffer = usart_arr[usart_id].output_buffer;
 
+    //1. Configuración USART TX y RX
     port_system_gpio_config(p_port_tx, pin_tx, GPIO_MODE_ALTERNATE, GPIO_PUPDR_PUP);
     port_system_gpio_config(p_port_rx, pin_rx, GPIO_MODE_ALTERNATE, GPIO_PUPDR_PUP);
-
+    //2. Configuración alternativa de USART TX Y RX
     port_system_gpio_config_alternate(p_port_tx, pin_tx, GPIO_MODE_ALTERNATE);
     port_system_gpio_config_alternate(p_port_rx, pin_rx, GPIO_MODE_ALTERNATE);
-
-    // Enable USART interrupts globally
+    // 3. Habilitar reloj de la USART3. (No se si falta por habilitar el reloj de la GPIO antes)
+    if (p_usart == USART3){
+        RCC -> AHB1ENR |= RCC_APB1ENR_USART3EN ;
+    }
+    // Explicado en pag 97 libro
+    // 4. Disable USART
+    USART3 -> CR1 &= ~USART_CR1_UE;
+    // 5. Set configuration 9600-8N-1
+    // 416,66 USART_BRR, bits 15:4 para mantisa y 3:0 fraccion
+    USART3 -> BRR = 0b1101000001010; //416,66 en binario CREO
+    USART3 -> CR2 &= ~ USART_CR2_STOP ; //Bit parada
+    USART3 -> CR1 &= ~ USART_CR1_PCE ; //Bit paridad
+    USART3 -> CR1 &= ~ USART_CR1_OVER8 ; //OVERSAMPLING 16
+    // 6. Enable TX & RX
+    USART3 -> CR1 &= ~(USART_CR1_TE | USART_CR1_RE);
+    // 7. Disable TX & RX Interruptions
+    USART3 -> CR1 &= ~(USART_CR1_TXEIE | USART_CR1_RXNEIE);
+    // 8. Clear flag RXNE
+    USART3 -> SR = 0;
+    // 9, 10. Enable USART interrupts globally
     if (p_usart == USART3)
     {
         NVIC_SetPriority(USART3_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 2, 0));
         NVIC_EnableIRQ(USART3_IRQn);
     }
-    //  STOP esta en CR2, Paridad PCE en USART_CR1.
-    // 416,66 USART_BRR, bits 15:4 para mantisa y 3:0 fraccion
-
-    //Habilitar reloj de la USART3. No se si falta por habilitar el reloj de la GPIO antes
-    if (p_usart == USART3){
-        RCC -> AHB1ENR |= RCC_APB1ENR_USART3EN ;
-    }
-
-    // Se activa/desactiva la USART con el bit UE del registro  USART_CR1
-    // Explicado en pag 97 libro
-
-
-    
+    // 11. Enable USART
+    USART3 -> CR1 |= USART_CR1_UE;
+    // 12, 13. Reset buffers
     _reset_buffer(input_buffer, USART_INPUT_BUFFER_LENGTH);
     _reset_buffer(output_buffer, USART_OUTPUT_BUFFER_LENGTH);
 
