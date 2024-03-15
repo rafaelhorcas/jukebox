@@ -74,11 +74,9 @@ static void do_set_data_tx (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
     port_usart_reset_output_buffer(p_fsm -> usart_id);
     port_usart_copy_to_output_buffer(p_fsm -> usart_id, p_fsm -> out_data, USART_OUTPUT_BUFFER_LENGTH);
-    while (!port_usart_get_txr_status(p_fsm ->usart_id)){
-    
+    while (!port_usart_get_txr_status(p_fsm ->usart_id));
     port_usart_write_data(p_fsm -> usart_id);
     port_usart_enable_tx_interrupt(p_fsm -> usart_id);
-    };
 }
 
 /* State machine output or action functions */
@@ -118,7 +116,6 @@ void fsm_usart_set_out_data(fsm_t *p_this, char *p_data)
     memcpy(p_fsm->out_data, p_data, USART_OUTPUT_BUFFER_LENGTH);
 }
 
-
 fsm_t *fsm_usart_new(uint32_t usart_id)
 {
     fsm_t *p_fsm = malloc(sizeof(fsm_usart_t)); /* Do malloc to reserve memory of all other FSM elements, although it is interpreted as fsm_t (the first element of the structure) */
@@ -147,7 +144,6 @@ void fsm_usart_reset_input_data (fsm_t *p_this){
     memset(p_fsm -> in_data, EMPTY_BUFFER_CONSTANT, USART_INPUT_BUFFER_LENGTH);
     p_fsm -> data_received = false;
 }
-
 
 /*bool fsm_usart_check_activity (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);

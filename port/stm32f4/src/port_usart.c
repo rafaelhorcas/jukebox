@@ -28,9 +28,7 @@ void _reset_buffer(char *buffer, uint32_t length){
    memset(buffer, EMPTY_BUFFER_CONSTANT, length);
 }
 
-
 /* Public functions */
-// TO-DO ALUMNOS
 void port_usart_init(uint32_t usart_id){
     USART_TypeDef *p_usart = usart_arr[usart_id].p_usart;
     GPIO_TypeDef *p_port_tx = usart_arr[usart_id].p_port_tx;
@@ -58,12 +56,12 @@ void port_usart_init(uint32_t usart_id){
     // 5. Set configuration 9600-8N-1
     // Calculo BRR = fclk / (8 * (2-OVER8) * USART_DIV0 = 16 MHz / 8 * 2 * 9600) = 104.16666
     // 104.16666 = 0x0682 USART_BRR, bits 15:4 para mantisa y 3:0 fraccion !!! comprobar el cálculo
-    USART3 -> BRR = 0x0682; //104.1666 en HEXADECIMAL !!! comprobar el cálculo
-    USART3 -> CR2 &= ~ USART_CR2_STOP ; //Bit parada
-    USART3 -> CR1 &= ~ USART_CR1_PCE ; //Bit paridad
-    USART3 -> CR1 &= ~ USART_CR1_OVER8 ; //OVERSAMPLING 16
+    p_usart -> BRR = 0x0682; //104.1666 en HEXADECIMAL !!! comprobar el cálculo
+    p_usart -> CR2 &= ~ USART_CR2_STOP ; //Bit parada
+    p_usart -> CR1 &= ~ USART_CR1_PCE ; //Bit paridad
+    p_usart -> CR1 &= ~ USART_CR1_OVER8 ; //OVERSAMPLING 16
     // 6. Enable TX & RX
-    USART3 -> CR1 |= (USART_CR1_TE | USART_CR1_RE);
+    p_usart -> CR1 |= (USART_CR1_TE | USART_CR1_RE);
     // 7. Disable TX & RX Interruptions
     port_usart_disable_rx_interrupt(usart_id);
     port_usart_disable_tx_interrupt(usart_id);
@@ -76,7 +74,7 @@ void port_usart_init(uint32_t usart_id){
         NVIC_EnableIRQ(USART3_IRQn);
     }
     // 11. Enable USART
-    USART3 -> CR1 |= USART_CR1_UE;
+    p_usart -> CR1 |= USART_CR1_UE;
     // 12, 13. Reset buffers
     _reset_buffer(input_buffer, USART_INPUT_BUFFER_LENGTH);
     _reset_buffer(output_buffer, USART_OUTPUT_BUFFER_LENGTH);
@@ -93,8 +91,7 @@ bool port_usart_get_txr_status(uint32_t usart_id){
 }
 
 void port_usart_copy_to_output_buffer(uint32_t usart_id, char *p_data, uint32_t length){
-    port_usart_hw_t p_usart = usart_arr[usart_id];
-    memcpy(p_usart.output_buffer, p_data, length);
+    memcpy(usart_arr[usart_id].output_buffer, p_data, length);
 }
 
 void port_usart_reset_input_buffer(uint32_t usart_id){
@@ -148,17 +145,17 @@ void port_usart_write_data(uint32_t	usart_id){
 }
 
 void port_usart_enable_rx_interrupt(uint32_t usart_id){
-    USART1 -> CR1 |= USART_CR1_RXNEIE;
+    usart_arr[usart_id].p_usart -> CR1 |= USART_CR1_RXNEIE;
 }
 
 void port_usart_enable_tx_interrupt(uint32_t usart_id){
-    USART1 -> CR1 |= USART_CR1_TXEIE;
+    usart_arr[usart_id].p_usart -> CR1 |= USART_CR1_TXEIE;
 }
 
 void port_usart_disable_rx_interrupt(uint32_t usart_id){
-    USART1 -> CR1 &= USART_CR1_RXNEIE;
+    usart_arr[usart_id].p_usart -> CR1 &= USART_CR1_RXNEIE;
 }
 
 void port_usart_disable_tx_interrupt(uint32_t usart_id){
-    USART1 -> CR1 &= USART_CR1_TXEIE;
+    usart_arr[usart_id].p_usart -> CR1 &= USART_CR1_TXEIE;
 }
