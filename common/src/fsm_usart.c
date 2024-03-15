@@ -36,7 +36,7 @@ static bool check_data_rx (fsm_t *p_this){
 */
 static bool check_data_tx (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
-    if (p_fsm -> out_data != EMPTY_BUFFER_CONSTANT) {
+    if (p_fsm -> out_data[0] != EMPTY_BUFFER_CONSTANT) {
         return true;
     } 
     return false;
@@ -75,9 +75,10 @@ static void do_set_data_tx (fsm_t *p_this){
     port_usart_reset_output_buffer(p_fsm -> usart_id);
     port_usart_copy_to_output_buffer(p_fsm -> usart_id, p_fsm -> out_data, USART_OUTPUT_BUFFER_LENGTH);
     while (!port_usart_get_txr_status(p_fsm ->usart_id)){
-    };
+    
     port_usart_write_data(p_fsm -> usart_id);
     port_usart_enable_tx_interrupt(p_fsm -> usart_id);
+    };
 }
 
 /* State machine output or action functions */

@@ -9,6 +9,7 @@
 // Include headers of different port elements:
 #include "port_system.h"
 #include "port_button.h"
+#include "port_usart.h"
 
 //------------------------------------------------------
 // INTERRUPT SERVICE ROUTINES
@@ -49,6 +50,15 @@ void EXTI15_10_IRQHandler ( void ){
 
     }
     EXTI -> PR |= BIT_POS_TO_MASK (buttons_arr[BUTTON_0_ID].pin); 
+}
+
+void USART3_IRQHandler(void){
+    if (USART_SR_RXNE & USART_CR1_RXNEIE){
+        port_usart_store_data(USART_0_ID);
+    }
+    if (USART_SR_TXE & USART_CR1_TXEIE){
+        port_usart_write_data(USART_0_ID);
+    }
 }
 
 

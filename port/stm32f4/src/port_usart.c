@@ -20,7 +20,7 @@
  * 
  */
 port_usart_hw_t usart_arr[] = {
-    [USART_0_ID] = {.p_usart = USART_0, .p_port_tx = USART_0_GPIO_TX, .p_port_rx = USART_0_GPIO_RX, .pin_tx= USART_0_PIN_TX, .pin_rx= USART_0_PIN_RX, .alt_func_tx = USART_0_AF_TX, .alt_func_rx = USART_0_AF_RX, .input_buffer = USART_INPUT_BUFFER_LENGTH, .read_complete = false, .write_complete = false, .i_idx = 0, .output_buffer = USART_OUTPUT_BUFFER_LENGTH, .o_idx = 0},
+    [USART_0_ID] = {.p_usart = USART_0, .p_port_tx = USART_0_GPIO_TX, .p_port_rx = USART_0_GPIO_RX, .pin_tx= USART_0_PIN_TX, .pin_rx= USART_0_PIN_RX, .alt_func_tx = USART_0_AF_TX, .alt_func_rx = USART_0_AF_RX, .read_complete = false, .write_complete = false, .i_idx = 0, .o_idx = 0},
 };
 
 /* Private functions */
@@ -48,21 +48,22 @@ void port_usart_init(uint32_t usart_id){
     //2. Configuración alternativa de USART TX Y RX
     port_system_gpio_config_alternate(p_port_tx, pin_tx, alt_func_tx);
     port_system_gpio_config_alternate(p_port_rx, pin_rx, alt_func_rx);
-    // 3. Habilitar reloj de la USART3. (No se si falta por habilitar el reloj de la GPIO antes)
+    // 3. Habilitar reloj de la USART3.
     if (p_usart == USART3){
-        RCC -> AHB1ENR |= RCC_APB1ENR_USART3EN ;
+        RCC -> APB1ENR |= RCC_APB1ENR_USART3EN ;
     }
     // Explicado en pag 97 libro
     // 4. Disable USART
     USART3 -> CR1 &= ~USART_CR1_UE;
     // 5. Set configuration 9600-8N-1
-    // 416,66 USART_BRR, bits 15:4 para mantisa y 3:0 fraccion
-    USART3 -> BRR = 0b1101000001010; //416,66 en binario CREO
+    // Calculo BRR = fclk / (8 * (2-OVER8) * USART_DIV0 = 16 MHz / 8 * 2 * 9600) = 104.16666
+    // 104.16666 = 0x0682 USART_BRR, bits 15:4 para mantisa y 3:0 fraccion !!! comprobar el cálculo
+    USART3 -> BRR = 0x0682; //104.1666 en HEXADECIMAL !!! comprobar el cálculo
     USART3 -> CR2 &= ~ USART_CR2_STOP ; //Bit parada
     USART3 -> CR1 &= ~ USART_CR1_PCE ; //Bit paridad
     USART3 -> CR1 &= ~ USART_CR1_OVER8 ; //OVERSAMPLING 16
     // 6. Enable TX & RX
-    USART3 -> CR1 &= ~(USART_CR1_TE | USART_CR1_RE);
+    USART3 -> CR1 |= (USART_CR1_TE | USART_CR1_RE);
     // 7. Disable TX & RX Interruptions
     port_usart_disable_rx_interrupt(usart_id);
     port_usart_disable_tx_interrupt(usart_id);
@@ -88,7 +89,7 @@ void port_usart_get_from_input_buffer(uint32_t usart_id, char *p_buffer){
 }
 
 bool port_usart_get_txr_status(uint32_t usart_id){
-    return usart_arr[usart_id].write_complete;
+    return USART3 -> SR & USART_SR_TXE;
 }
 
 void port_usart_copy_to_output_buffer(uint32_t usart_id, char *p_data, uint32_t length){
@@ -114,7 +115,6 @@ bool port_usart_tx_done(uint32_t usart_id){
     return usart_arr[usart_id].write_complete;
 }
 
-// TO-DO ALUMNOS
 void port_usart_store_data(uint32_t usart_id){
     char data = USART3 -> DR;
     if (data != END_CHAR_CONSTANT){
@@ -122,8 +122,7 @@ void port_usart_store_data(uint32_t usart_id){
         if (input_index >= USART_INPUT_BUFFER_LENGTH){
             usart_arr[usart_id].i_idx = 0;
         }
-        // ni idea xddd
-
+        usart_arr[usart_id].input_buffer[usart_arr[usart_id].i_idx] = data;
     }
     else {
         usart_arr[usart_id].read_complete = true;
@@ -131,9 +130,21 @@ void port_usart_store_data(uint32_t usart_id){
     }
 }
 
-// TO-DO ALUMNOS
 void port_usart_write_data(uint32_t	usart_id){
-
+    uint32_t o_idx = usart_arr[usart_id].o_idx;
+    char data = usart_arr[usart_id].output_buffer[o_idx];
+    if ((o_idx == USART_OUTPUT_BUFFER_LENGTH -1) | (data == END_CHAR_CONSTANT)){
+        USART3 -> DR = data;
+        port_usart_disable_tx_interrupt(usart_id);
+        port_usart_reset_output_buffer(usart_id);
+        usart_arr[usart_id].write_complete = true;
+        return;
+    }
+    else if (data != EMPTY_BUFFER_CONSTANT) {
+        USART3 -> DR = data;
+        usart_arr[usart_id].o_idx = o_idx;
+    }
+    return;
 }
 
 void port_usart_enable_rx_interrupt(uint32_t usart_id){
