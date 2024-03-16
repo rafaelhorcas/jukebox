@@ -66,8 +66,8 @@ void port_usart_init(uint32_t usart_id){
     port_usart_disable_rx_interrupt(usart_id);
     port_usart_disable_tx_interrupt(usart_id);
     // 8. Clear flag RXNE
-    USART3 -> SR &= ~ USART_SR_RXNE;
-    // 9, 10. Enable USART interrupts globally
+    p_usart -> SR &= ~ USART_SR_RXNE;
+    // 9, 10. 
     if (p_usart == USART3)
     {
         NVIC_SetPriority(USART3_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 2, 0));
@@ -87,7 +87,7 @@ void port_usart_get_from_input_buffer(uint32_t usart_id, char *p_buffer){
 }
 
 bool port_usart_get_txr_status(uint32_t usart_id){
-    return USART3 -> SR & USART_SR_TXE;
+    return usart_arr[usart_id].p_usart -> SR & USART_SR_TXE;
 }
 
 void port_usart_copy_to_output_buffer(uint32_t usart_id, char *p_data, uint32_t length){
@@ -113,33 +113,34 @@ bool port_usart_tx_done(uint32_t usart_id){
 }
 
 void port_usart_store_data(uint32_t usart_id){
-    char data = USART3 -> DR;
+    char data = usart_arr[usart_id].p_usart -> DR;
     if (data != END_CHAR_CONSTANT){
         uint32_t input_index = usart_arr[usart_id].i_idx;
         if (input_index >= USART_INPUT_BUFFER_LENGTH){
             usart_arr[usart_id].i_idx = 0;
         }
         usart_arr[usart_id].input_buffer[usart_arr[usart_id].i_idx] = data;
+        usart_arr[usart_id].i_idx++;
     }
     else {
         usart_arr[usart_id].read_complete = true;
-        port_usart_reset_input_buffer(usart_id);
+        usart_arr[usart_id].i_idx = 0;
     }
 }
 
 void port_usart_write_data(uint32_t	usart_id){
     uint32_t o_idx = usart_arr[usart_id].o_idx;
     char data = usart_arr[usart_id].output_buffer[o_idx];
-    if ((o_idx == USART_OUTPUT_BUFFER_LENGTH -1) | (data == END_CHAR_CONSTANT)){
-        USART3 -> DR = data;
+    if ((o_idx == USART_OUTPUT_BUFFER_LENGTH -1) || (data == END_CHAR_CONSTANT)){
+        usart_arr[usart_id].p_usart  -> DR = data;
         port_usart_disable_tx_interrupt(usart_id);
         port_usart_reset_output_buffer(usart_id);
         usart_arr[usart_id].write_complete = true;
         return;
     }
     else if (data != EMPTY_BUFFER_CONSTANT) {
-        USART3 -> DR = data;
-        usart_arr[usart_id].o_idx = o_idx;
+        usart_arr[usart_id].p_usart -> DR = data;
+        usart_arr[usart_id].o_idx++;
     }
     return;
 }

@@ -52,12 +52,22 @@ void EXTI15_10_IRQHandler ( void ){
     EXTI -> PR |= BIT_POS_TO_MASK (buttons_arr[BUTTON_0_ID].pin); 
 }
 
+/**
+ * @brief This function handles USART3 global interrupt.
+ * First, this function identifies the line/ pin which has raised the interruption. Then, perform the desired action. Before leaving it cleans the interrupt pending register.
+ * 
+ */
 void USART3_IRQHandler(void){
-    if (USART_SR_RXNE & USART_CR1_RXNEIE){
-        port_usart_store_data(USART_0_ID);
+    if (USART_0->CR1 & USART_CR1_RXNEIE){
+        if (USART_0->SR & USART_SR_RXNE){
+            port_usart_store_data(USART_0_ID);
+        }
+        
     }
-    if (USART_SR_TXE & USART_CR1_TXEIE){
-        port_usart_write_data(USART_0_ID);
+    if (USART_0->CR1 & USART_CR1_TXEIE){
+        if (USART_0->SR & USART_SR_TXE){
+            port_usart_write_data(USART_0_ID);
+        }
     }
 }
 
