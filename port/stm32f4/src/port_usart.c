@@ -129,12 +129,11 @@ void port_usart_store_data(uint32_t usart_id){
 }
 
 void port_usart_write_data(uint32_t	usart_id){
-    uint32_t o_idx = usart_arr[usart_id].o_idx;
-    char data = usart_arr[usart_id].output_buffer[o_idx];
-    if ((o_idx == USART_OUTPUT_BUFFER_LENGTH -1) || (data == END_CHAR_CONSTANT)){
+    char data = usart_arr[usart_id].output_buffer[usart_arr[usart_id].o_idx];
+    if ((usart_arr[usart_id].o_idx == USART_OUTPUT_BUFFER_LENGTH -1) || (data == END_CHAR_CONSTANT)){
         usart_arr[usart_id].p_usart  -> DR = data;
         port_usart_disable_tx_interrupt(usart_id);
-        port_usart_reset_output_buffer(usart_id);
+        usart_arr[usart_id].o_idx = 0;
         usart_arr[usart_id].write_complete = true;
         return;
     }
@@ -154,9 +153,9 @@ void port_usart_enable_tx_interrupt(uint32_t usart_id){
 }
 
 void port_usart_disable_rx_interrupt(uint32_t usart_id){
-    usart_arr[usart_id].p_usart -> CR1 &= USART_CR1_RXNEIE;
+    usart_arr[usart_id].p_usart -> CR1 &= ~USART_CR1_RXNEIE;
 }
 
 void port_usart_disable_tx_interrupt(uint32_t usart_id){
-    usart_arr[usart_id].p_usart -> CR1 &= USART_CR1_TXEIE;
+    usart_arr[usart_id].p_usart -> CR1 &= ~USART_CR1_TXEIE;
 }
