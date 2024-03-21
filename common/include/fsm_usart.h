@@ -41,44 +41,44 @@ typedef struct
     bool data_received;                         /*!<Flag to indicate that a data has been received*/
     char in_data [USART_INPUT_BUFFER_LENGTH];   /*!<Input data*/
     char out_data [USART_OUTPUT_BUFFER_LENGTH]; /*!<Output data*/
-    uint8_t usart_id;                           /*!<USART ID. Must be unique*/
+    uint8_t usart_id;                           /*!<Unique USART identifier number*/
 } fsm_usart_t ;
 
 /* Function prototypes and explanation -------------------------------------------------*/
 
 /**
  * @brief Create a new USART FSM.
- * @param usart_id	Unique USART identifier number
- * @return A pointer to the USART FSM
+ * @param usart_id	Unique USART identifier number.
+ * @return A pointer to the USART FSM.
 */
 fsm_t * fsm_usart_new (uint32_t usart_id);
 
 /**
  * @brief Initialize a USART FSM.
- * @param p_this	Pointer to an fsm_t struct than contains an fsm_usart_t struct
- * @param usart_id	Unique USART identifier number
+ * @param p_this	Pointer to an fsm_t struct than contains an fsm_usart_t struct.
+ * @param usart_id	Unique USART identifier number.
 */
 void fsm_usart_init (fsm_t *p_this, uint32_t usart_id);
 
 /**
  * @brief Check if data has been received.
- * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct.
  * @return true
  * @return false
 */
 bool fsm_usart_check_data_received (fsm_t *p_this);
 
 /**
- * @brief Get the data received.
- * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct
- * @param p_data Pointer to the array where the data will be copied from the in_data array
+ * @brief Get the data received by the USART.
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct.
+ * @param p_data Pointer to the array where the data will be copied from the in_data array.
 */
 void fsm_usart_get_in_data (fsm_t *p_this, char *p_data);
 
 /**
- * @brief Set the data to send.
- * @param p_this	Pointer to an fsm_t struct than contains an fsm_usart_t struct
- * @param p_data	Pointer to an array from where the data will be copied to the out_data array
+ * @brief Set the data to send by the USART.
+ * @param p_this	Pointer to an fsm_t struct than contains an fsm_usart_t struct.
+ * @param p_data	Pointer to an array from where the data will be copied to the out_data array.
 */
 void fsm_usart_set_out_data (fsm_t *p_this, char *p_data);
 
@@ -89,8 +89,8 @@ void fsm_usart_set_out_data (fsm_t *p_this, char *p_data);
 void fsm_usart_reset_input_data (fsm_t *p_this);
 
 /**
- * @brief Check if the USART FSM is active, or not.
- * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct
+ * @brief Check whether the USART is active or not.
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t struct.
  * @return true
  * @return false
 */

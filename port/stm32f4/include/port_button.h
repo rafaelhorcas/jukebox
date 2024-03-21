@@ -35,40 +35,39 @@ En nuestro caso, el botón de usuario, B1, usa Puerto C, pin 13.
  */
 typedef struct
 {
-    GPIO_TypeDef *p_port;
-    uint8_t pin;
-    bool flag_pressed;
-} port_button_hw_t;
+    GPIO_TypeDef *p_port;   /*!<GPIO where the button is connected*/
+    uint8_t pin;            /*!<Pin where the button is connected*/
+    bool flag_pressed;      /*!<Flag to indicate the button has been pressed*/
+} port_button_hw_t;         
 
 /* Global variables */
 /**
- * @brief Array of elements that represents the HW characteristics of the buttons.
- * This is an extern variable that is defined in port_button.c . It represents an array of hardware buttons.
- * This is an extern variable that is declared in port_button.h.
+ * @brief Array of hardware buttons.
+ * 
  */
 extern port_button_hw_t buttons_arr[];
 
 /* Function prototypes and explanation -------------------------------------------------*/
 /**
- * @brief Returns in milliseconds the count of System tick.
+ * @brief Return the count of System tick (in ms).
  *
  * @return uint32_t
  */
 uint32_t port_button_get_tick ();
 
 /**
- * @brief Initializes the given button by configuring the provided hardware specifications.
+ * @brief Initialize the given button by configuring the provided hardware specifications.
  * 
- * @param button_id	Button ID. This index is used to select the element of the buttons_arr[] array
+ * @param button_id	Button ID. This index is used to select the element of the buttons_arr[] array.
  */
 void port_button_init (uint32_t button_id)	;
 
 /**
- * @brief Returns the status of the button (pressed or not)
+ * @brief Return whether the button has been pressed or not.
  * 
- * @param button_id	Button ID. This index is used to select the element of the buttons_arr[] array
- * @return true if the button has been pressed
- * @return false if the button has not been pressed
+ * @param button_id	Button ID. This index is used to select the element of the buttons_arr[] array.
+ * @return true if the button has been pressed.
+ * @return false if the button has not been pressed.
  */
 bool port_button_is_pressed	(uint32_t button_id	)	;
 

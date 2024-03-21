@@ -38,22 +38,26 @@
  * 
  */
 typedef struct {
-    USART_TypeDef *p_usart;                                      
-    GPIO_TypeDef *p_port_tx;
-    GPIO_TypeDef *p_port_rx;
-    uint8_t pin_tx;
-    uint8_t pin_rx;
-    uint8_t alt_func_tx;
-    uint8_t alt_func_rx;
-    char input_buffer [USART_INPUT_BUFFER_LENGTH];
-    uint8_t i_idx;
-    bool read_complete;
-    char output_buffer [USART_OUTPUT_BUFFER_LENGTH];
-    uint8_t o_idx;
-    bool write_complete;
+    USART_TypeDef *p_usart;                              /*!<USART peripheral*/                           
+    GPIO_TypeDef *p_port_tx;                             /*!<GPIO where the USART TX is connected*/
+    GPIO_TypeDef *p_port_rx;                             /*!<GPIO where the USART RX is connected*/
+    uint8_t pin_tx;                                      /*!<Pin where the USART TX is connected*/ 
+    uint8_t pin_rx;                                      /*!<Pin where the USART RX is connected*/
+    uint8_t alt_func_tx;                                 /*!<Alternate function for the TX pin*/
+    uint8_t alt_func_rx;                                 /*!<Alternate function for the RX pin*/
+    char input_buffer [USART_INPUT_BUFFER_LENGTH];       /*!<Input buffer*/
+    uint8_t i_idx;                                       /*!<Index of the input buffer*/
+    bool read_complete;                                  /*!<Flag to indicate that the data has been read*/
+    char output_buffer [USART_OUTPUT_BUFFER_LENGTH];     /*!<Output buffer*/
+    uint8_t o_idx;                                       /*!<Index of the output buffer*/
+    bool write_complete;                                 /*!<Flag to indicate that the data has been sent*/
 }port_usart_hw_t;
 
 /* Global variables */
+/**
+ * @brief Array of hardware USARTs.
+ * 
+ */
 extern port_usart_hw_t usart_arr[];
 
 /* Function prototypes and explanation -------------------------------------------------*/

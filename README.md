@@ -1,6 +1,5 @@
 # Jukebox
 
-
 ## Authors
 
 * **Rafael Horcas Mateo** - email: [r.horcasm@alumnos.upm.es](mailto:r.horcasm@alumnos.upm.es)
@@ -10,80 +9,77 @@ En el proyecto Jukebox se establece una comunicación a través de un puerto USA
 
 The Jukebox project establishes communication via USART port using an STM32F446RE connected to a computer. This enables communication with a buzzer capable of playing melodies. It has more functionalities that are developed throughout the project.
 
-Puede añadir una imagen de portada **de su propiedad** aquí. Por ejemplo, del montaje final, o una captura de osciloscopio, etc.
+## Version 1
+En la primera versión solo está habilitado el botón de usuario, el cual está conectado al **pin 13** de la **GPIO C**. 
+
+El sistema es capaz de identificar si se pulsa el botón y durante cuanto tiempo. Debido al funcionamiento del hardware del botón es necesario implementar un sistema anti-rebotes, que ha sido configurado a **150ms**. De esta manera, solo se pueden identificar como pulsaciones válidas aquellas con este tiempo mínimo.
+
+Para la detección de las pulsaciones se ha empleado la interrupción externa 13 (EXTI13).
+
+En la siguiente tabla se especifican las diferentes configuraciones necesarias para el correcto funcionamiento del botón de usuario.
+
+| Parámetro | Valor | 
+| --------- | --------- | 
+| Pin   | PC13   | 
+| Modo   | Input   | 
+| Pull up/down   | No push no pull   | 
+| EXTI   | EXTI13   | 
+| ISR   | EXTI15_10_IRQHandler  | 
+| Prioridad  | 1  |
+| Subprioridad   | 0 | 
+| Tiempo antirebotes| 150ms  | 
+
+Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para el botón. Se puede observar el código en los siguientes ficheros:
+
+Archivo de cabeceras: [fsm_button.h](fsm__button_8h.html) 
+
+Archivo de código fuente: [fsm_button.c](fsm__button_8c.html)
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más botones si se desea para versiones posteriores.
+
+Archivo de cabeceras: [port_button.h](port__button_8h.html) 
+
+Archivo de código fuente: [port_button.c](port__button_8c.html)
+
+## Version 2
+En la segunda versión se habilita la comunicación serie entre la placa y el ordenador mediante una USART. Se va a usar la **USART3**. La transmisión, **TX**, se encuentra en la **GPIO B**, en el **pin 10** y la recepción, **RX**, se encuentra en la **GPIO C**, en el **pin 11**.
+
+En la siguiente tabla se especifican las diferentes configuraciones necesarias para el correcto funcionamiento de la USART3.
+
+| Parámetro | Valor | 
+| --------- | --------- | 
+| Baudrate   | 9600   | 
+| Data bits   | 8   | 
+| Stop bits  | 1   | 
+| Parity   | None   | 
+| Flow control   | None | 
+| USART  | USART3 |
+| Pins   | PB10 (TX) and PC11 (RX) | 
+| Mode| Alternative |
+| Pull up/down   | Pull up | 
+| ISR   | USART3_IRQn | 
+| Priority | 2  |
+| Subpriority  | 0 | 
+
+Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para la trasmisión de datos. Se puede observar el código en los siguientes ficheros:
+
+Archivo de cabeceras: [fsm_usart.h](fsm__usart_8h.html) 
+
+Archivo de código fuente: [fsm_usart.c](fsm__usart_8c.html)
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más USARTs si se desea para versiones posteriores.
+
+Archivo de cabeceras: [port_usart.h](port__usart_8h.html) 
+
+Archivo de código fuente: [port_usart.c](port__usart_8c.html)
+
+
+
+
 
 **Las imágenes se deben guardar en la carpeta `docs/assets/imgs/` y se pueden incluir en el documento de la siguiente manera:**
 
 ```markdown
 ![Texto alternativo](docs/assets/imgs/imagen.png)
 ``` 
-
-**Añada un enlace a un vídeo público de su propiedad aquí con la demostración del proyecto explicando lo que haya hecho en la versión V5.**
-
-Para añadir un enlace a un vídeo de Youtube, puede usar el siguiente código:
-
-```markdown
-[![Texto alternativo](docs/assets/imgs/imagen.png)](https://youtu.be/ID_DEL_VIDEO "Texto al pasar el ratón por encima de la imagen.")
-```
-
-## Version 1
-Breve descripción de la versión 1.
-
-- Para poner un texto en negrita se usa el símbolo `**` de manera consecutiva. Por ejemplo: **Texto en negrita**
-- Para poner un texto en cursiva se usa el símbolo `*` de manera consecutiva. Por ejemplo: *Texto en cursiva*
-- Para poner un texto en cursiva y negrita se usa el símbolo `***` de manera consecutiva. Por ejemplo: ***Texto en cursiva y negrita***
-
-Para añadir subsecciones se usa el símbolo `#` de manera consecutiva. Por ejemplo:
-
-### Subsección 1
-Breve descripción de la subsección 1.
-
-Para añadir una lista de elementos se usa el símbolo `-` de manera consecutiva. Por ejemplo:
-
-- Elemento 1
-- Elemento 2
-- Elemento 3
-
-Para añadir una lista de elementos numerados se usa el símbolo `1.` de manera consecutiva. Por ejemplo:
-
-1. Elemento 1
-2. Elemento 2
-3. Elemento 3
-
-Para añadir un enlace a una página web se usa el siguiente código:
-
-```markdown
-Enlace a [Google](https://www.google.com).
-```
-
-Puede añadir tablas de la siguiente manera:
-
-| Columna 1 | Columna 2 | Columna 3 |
-| --------- | --------- | --------- |
-| Valor 1   | Valor 2   | Valor 3   |
-| Valor 4   | Valor 5   | Valor 6   |
-
-Para añadir un enlace a un fichero `.c` o `.h` puede usar el siguiente código. Se trata de enlaces a ficheros `.html` que se generan automáticamente con la documentación del código al ejecutar Doxygen y que se encuentran en la carpeta `docs/html/`.
-
-```markdown
-Enlace a la [FSM de Version 1](fsm__button_8c.html).
-```
-
-
-
-## Version 2
-Breve descripción de la versión 2.
-
-
-## Version 3
-Breve descripción de la versión 3.
-
-
-## Version 4
-Breve descripción de la versión 4.
-
-
-## Version 5
-
-Breve descripción de la versión 5.
 

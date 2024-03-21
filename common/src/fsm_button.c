@@ -83,6 +83,7 @@ static void do_set_duration(fsm_t *p_this)
 /**
  * @brief Array representing the transitions table of the FSM button
  * 
+ * @image html fsm_button_states.png
  */
 static fsm_trans_t fsm_trans_button[] = {
     { BUTTON_RELEASED , check_button_pressed , BUTTON_PRESSED_WAIT , do_store_tick_pressed },

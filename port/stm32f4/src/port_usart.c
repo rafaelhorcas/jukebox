@@ -15,10 +15,7 @@
 #include "port_usart.h"
 
 /* Global variables */
-/**
- * @brief Array of elements that represents the HW characteristics of the USARTs. This is an extern variable that is declared in port_usart.h.
- * 
- */
+
 port_usart_hw_t usart_arr[] = {
     [USART_0_ID] = {.p_usart = USART_0, .p_port_tx = USART_0_GPIO_TX, .p_port_rx = USART_0_GPIO_RX, .pin_tx= USART_0_PIN_TX, .pin_rx= USART_0_PIN_RX, .alt_func_tx = USART_0_AF_TX, .alt_func_rx = USART_0_AF_RX, .read_complete = false, .write_complete = false, .i_idx = 0, .o_idx = 0},
 };

@@ -29,7 +29,7 @@ static bool check_data_rx (fsm_t *p_this){
 }
  
  /**
- * @brief Checks the buffer to find out if there is any data to be sent.
+ * @brief Check if there are data to be sent.
  * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t.
  * @return true
  * @return false
@@ -55,7 +55,7 @@ static bool check_tx_end (fsm_t *p_this){
 
 /* State machine output or action functions */
  /**
- * @brief Get the data received.
+ * @brief Get the data received by the USART that still remains in the input buffer of the PORT layer.
  * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t.
 */ 
 static void do_get_data_rx (fsm_t *p_this){
@@ -67,7 +67,7 @@ static void do_get_data_rx (fsm_t *p_this){
 
 /* State machine output or action functions */
  /**
- * @brief Set the data to be sent.
+ * @brief Set the data to be sent by the USART to the output buffer of the PORT layer.
  * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t.
 */ 
 static void do_set_data_tx (fsm_t *p_this){
@@ -81,7 +81,7 @@ static void do_set_data_tx (fsm_t *p_this){
 
 /* State machine output or action functions */
  /**
- * @brief Finish the data transmission.
+ * @brief Resets the output buffer of the PORT layer to end the transmission.
  * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t.
 */ 
 static void do_tx_end (fsm_t *p_this){
@@ -93,6 +93,7 @@ static void do_tx_end (fsm_t *p_this){
 /**
  * @brief Array representing the transitions table of the fsm_usart.
  * 
+ * @image html fsm_usart_states.png
  */
 static fsm_trans_t fsm_trans_usart[] ={
     { WAIT_DATA, check_data_rx, WAIT_DATA, do_get_data_rx},

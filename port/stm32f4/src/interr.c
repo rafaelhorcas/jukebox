@@ -20,12 +20,6 @@
  * @note This ISR is called when the SysTick timer generates an interrupt.
  * The program flow jumps to this ISR and increments the tick counter by one millisecond.
  *
- * > **TO-DO alumnos:**
- * >
- * > ✅ 1. **Increment the System tick counter `msTicks` in 1 count.** To do so, use the function `port_system_get_millis()` and `port_system_get_millis()`.
- *
- * @warning **The variable `msTicks` must be declared volatile!** Just because it is modified by a call of an ISR, in order to avoid [*race conditions*](https://en.wikipedia.org/wiki/Race_condition). **Added to the definition** after *static*.
- *
  */
 void SysTick_Handler(void){
     uint32_t tickstart = port_system_get_millis();
@@ -34,7 +28,7 @@ void SysTick_Handler(void){
 
 /**
  * @brief This function handles Px10-Px15 global interrupts.
- * First, this function identifies the line/pin which has raised the interruption. Then, perform the desired action. Before leaving it cleans the interrupt pending register.
+ * First, this function identifies the pin which has raised the interruption. Then, perform the desired action. Before leaving it cleans the interrupt pending register.
  */
 void EXTI15_10_IRQHandler ( void ){
    /* ISR user button */
@@ -54,7 +48,7 @@ void EXTI15_10_IRQHandler ( void ){
 
 /**
  * @brief This function handles USART3 global interrupt.
- * First, this function identifies the line/ pin which has raised the interruption. Then, perform the desired action. Before leaving it cleans the interrupt pending register.
+ * First, this function identifies the pin which has raised the interruption. Then, perform the desired action. Before leaving it cleans the interrupt pending register.
  * 
  */
 void USART3_IRQHandler(void){

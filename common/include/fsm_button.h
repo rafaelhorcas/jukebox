@@ -18,6 +18,10 @@
 #include "fsm.h"
 
 /* Defines -------------------------------------------------------------------*/
+/**
+ * @brief Enumerator that defines the different states the finite state machine can be in.
+ * 
+ */
 enum FSM_BUTTON {
     BUTTON_RELEASED = 0,  /*!<Starting state. Also comes here when the button has been released*/
     BUTTON_RELEASED_WAIT, /*!<State to perform the anti-debounce mechanism for a falling edge*/
@@ -42,41 +46,41 @@ typedef struct
 
 /* Function prototypes and documentation ---------------------------------------*/
 /**
- * @brief Creates a new FSM that meassures for how long the button has been pressed.
+ * @brief Creates a new FSM that meassures how long has the button been pressed.
  *
  * @param debounce_time time (in ms) the FSM will wait 150 ms in intermediate steps to avoid mechanical gltiches.
- * @param button_id	Unique button identifier number
+ * @param button_id	Unique button identifier number.
  *
- * @return fsm_t* pointer to the button FSM.
+ * @return fsm_t Pointer to the button FSM.
  */
 fsm_t * fsm_button_new(uint32_t debounce_time, uint32_t button_id);
 
 /**
- * @brief Initializes all the parameters
+ * @brief Initializes all the parameters of the button FSM.
  *
  * @param p_this Pointer to an fsm_t struct than contains an fsm_button_t.
- * @param debounce_time	Anti-debounce time in milliseconds
- * @param button_id	Unique button identifier number
+ * @param debounce_time	Anti-debounce time in milliseconds.
+ * @param button_id	Unique button identifier number.
  */
 void fsm_button_init(fsm_t *p_this, uint32_t debounce_time, uint32_t button_id);
 
 /**
  * @brief Returns the latest duration measured by the button FSM.
  *
- * @param p_this Pointer to an fsm_t struct than contains an fsm_button_t
- * @return uint32_t amount of time (in ms) that the button has been pressed.
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_button_t.
+ * @return uint32_t Amount of time (in ms) that the button has been pressed.
  */
 uint32_t fsm_button_get_duration(fsm_t *p_this);
 
 /**
- * @brief Resets the duration measured by setting the button FSM to 0.
+ * @brief Resets the duration measured by the FSM button.
  * 
  * @param p_this Pointer to an fsm_t struct than contains an fsm_button_t.
  */
 void fsm_button_reset_duration(fsm_t *p_this);
 
 /** 
- * @brief Checks the status of the button to determine whether its active or not. The button is inactive when it is in the status + BUTTON_RELEASED.
+ * @brief Checks the status of the button to determine whether its active or not. The button is inactive when it is in the status BUTTON_RELEASED.
  * @param p_this Pointer to an fsm_t struct than contains an fsm_button_t.
  * @return true
  * @return false
