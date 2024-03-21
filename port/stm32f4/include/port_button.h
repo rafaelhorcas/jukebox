@@ -50,25 +50,25 @@ extern port_button_hw_t buttons_arr[];
 
 /* Function prototypes and explanation -------------------------------------------------*/
 /**
- * @brief Return the count of the System tick in milliseconds.
+ * @brief Returns in milliseconds the count of System tick.
  *
  * @return uint32_t
  */
 uint32_t port_button_get_tick ();
 
 /**
- * @brief Configure the HW specifications of a given button.
+ * @brief Initializes the given button by configuring the provided hardware specifications.
  * 
  * @param button_id	Button ID. This index is used to select the element of the buttons_arr[] array
  */
-void port_button_init (uint32_t button_id	)	;
+void port_button_init (uint32_t button_id)	;
 
 /**
- * @brief Return the status of the button (pressed or not)
+ * @brief Returns the status of the button (pressed or not)
  * 
  * @param button_id	Button ID. This index is used to select the element of the buttons_arr[] array
- * @return true If the button has been pressed
- * @return false If the button has not been pressed
+ * @return true if the button has been pressed
+ * @return false if the button has not been pressed
  */
 bool port_button_is_pressed	(uint32_t button_id	)	;
 

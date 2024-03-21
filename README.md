@@ -3,11 +3,12 @@
 
 ## Authors
 
-* Rafael Horcas Mateo - email: [r.horcasm@alumnos.upm.es](mailto:r.horcasm@alumnos.upm.es)
-* Víctor Mendizábal Gimeno - email: [v.mendizabal@alumnos.upm.es](mailto:v.mendizabal@alumnos.upm.es)
+* **Rafael Horcas Mateo** - email: [r.horcasm@alumnos.upm.es](mailto:r.horcasm@alumnos.upm.es)
+* **Víctor Mendizábal Gimeno** - email: [v.mendizabal@alumnos.upm.es](mailto:v.mendizabal@alumnos.upm.es)
 
+En el proyecto Jukebox se establece una comunicación a través de un puerto USART usando STM32F446RE conectado a un ordenador. Esto permite la comunicación con un zumbador que puede reproducir melodías y cuenta con funcionalidades que se van desarrollando a lo largo del proyecto.
 
-Ponga una breve descripción del proyecto **aquí** en castellano e inglés.
+The Jukebox project establishes communication via USART port using an STM32F446RE connected to a computer. This enables communication with a buzzer capable of playing melodies. It has more functionalities that are developed throughout the project.
 
 Puede añadir una imagen de portada **de su propiedad** aquí. Por ejemplo, del montaje final, o una captura de osciloscopio, etc.
 

@@ -33,6 +33,10 @@
 #define END_CHAR_CONSTANT 0xA                /*!<End char constant*/
 
 /* Typedefs --------------------------------------------------------------------*/
+/**
+ * @brief Structure representing the hardware configuration of the USART.
+ * 
+ */
 typedef struct {
     USART_TypeDef *p_usart;                                      
     GPIO_TypeDef *p_port_tx;

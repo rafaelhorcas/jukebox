@@ -24,6 +24,12 @@ port_usart_hw_t usart_arr[] = {
 };
 
 /* Private functions */
+/**
+ * @brief Reset the contents of the buffer.
+ * 
+ * @param buffer Pointer to the buffer.
+ * @param length Length of the buffer.
+ */
 void _reset_buffer(char *buffer, uint32_t length){
    memset(buffer, EMPTY_BUFFER_CONSTANT, length);
 }
@@ -55,8 +61,8 @@ void port_usart_init(uint32_t usart_id){
     USART3 -> CR1 &= ~USART_CR1_UE;
     // 5. Set configuration 9600-8N-1
     // Calculo BRR = fclk / (8 * (2-OVER8) * USART_DIV0 = 16 MHz / 8 * 2 * 9600) = 104.16666
-    // 104.16666 = 0x0682 USART_BRR, bits 15:4 para mantisa y 3:0 fraccion !!! comprobar el cálculo
-    p_usart -> BRR = 0x0682; //104.1666 en HEXADECIMAL !!! comprobar el cálculo
+    // 104.16666 = 0x0682 USART_BRR, bits 15:4 para mantisa y 3:0 fraccion
+    p_usart -> BRR = 0x0682; //104.1666 en HEXADECIMAL
     p_usart -> CR2 &= ~ USART_CR2_STOP ; //Bit parada
     p_usart -> CR1 &= ~ USART_CR1_PCE ; //Bit paridad
     p_usart -> CR1 &= ~ USART_CR1_OVER8 ; //OVERSAMPLING 16

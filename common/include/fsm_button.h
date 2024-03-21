@@ -42,12 +42,9 @@ typedef struct
 
 /* Function prototypes and documentation ---------------------------------------*/
 /**
- * @brief Creates a new FSM for measuring how long the button is pressed.
+ * @brief Creates a new FSM that meassures for how long the button has been pressed.
  *
- * @note this function uses malloc to save memory space in the heap for the FSM.
- * @note If you are done with the FSM, you must call fsm_destroy to free memory.
- *
- * @param debounce_time time (in ms) the FSM will wait in intermediate steps to avoid mechanical gltiches.
+ * @param debounce_time time (in ms) the FSM will wait 150 ms in intermediate steps to avoid mechanical gltiches.
  * @param button_id	Unique button identifier number
  *
  * @return fsm_t* pointer to the button FSM.
@@ -55,9 +52,9 @@ typedef struct
 fsm_t * fsm_button_new(uint32_t debounce_time, uint32_t button_id);
 
 /**
- * @brief Initializes all the parameters for an FSM that measures how long the button is pressed.
+ * @brief Initializes all the parameters
  *
- * @param p_this	Pointer to an fsm_t struct than contains an fsm_button_t.
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_button_t.
  * @param debounce_time	Anti-debounce time in milliseconds
  * @param button_id	Unique button identifier number
  */
@@ -72,17 +69,17 @@ void fsm_button_init(fsm_t *p_this, uint32_t debounce_time, uint32_t button_id);
 uint32_t fsm_button_get_duration(fsm_t *p_this);
 
 /**
- * @brief Sets the duration measured by the button FSM to 0.
+ * @brief Resets the duration measured by setting the button FSM to 0.
  * 
  * @param p_this Pointer to an fsm_t struct than contains an fsm_button_t.
  */
 void fsm_button_reset_duration(fsm_t *p_this);
 
 /** 
- * @brief Check if the button FSM is active, or not. The button is inactive when it is in the status BUTTON_RELEASED.
- * @param p_this	Pointer to an fsm_t struct than contains an fsm_button_t.
+ * @brief Checks the status of the button to determine whether its active or not. The button is inactive when it is in the status + BUTTON_RELEASED.
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_button_t.
  * @return true
- * @return
+ * @return false
  */  
 bool fsm_button_check_activity(fsm_t *p_this);
 

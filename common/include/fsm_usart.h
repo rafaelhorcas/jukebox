@@ -23,8 +23,8 @@
 /* Defines and enums ----------------------------------------------------------*/
 /* Enums */
 /**
- * @brief Enumerator for the USART finite state machine.
- * This enumerator defines the different states that the USART finite state machine can be in. Each state represents a specific condition or step in the USART communication process.
+ * @brief Enumerates the states that the USART finite state machine can be in.
+ * 
  */
 enum FSM_USART {
      WAIT_DATA = 0, /*!<Starting state. Also comes here when data has been send or read*/

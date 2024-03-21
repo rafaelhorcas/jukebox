@@ -18,7 +18,7 @@
 /* State machine input or transition functions */
 
 /**
- * @brief Check if data have been received.
+ * @brief Check if data has been received.
  * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t.
  * @return true
  * @return false
@@ -29,7 +29,7 @@ static bool check_data_rx (fsm_t *p_this){
 }
  
  /**
- * @brief Check if there are data to be sent..
+ * @brief Checks the buffer to find out if there is any data to be sent.
  * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t.
  * @return true
  * @return false
@@ -43,7 +43,7 @@ static bool check_data_tx (fsm_t *p_this){
 }
 
  /**
- * @brief Check if the data have been sent.
+ * @brief Check if the data has been sent.
  * @param p_this Pointer to an fsm_t struct than contains an fsm_usart_t.
  * @return true
  * @return false
