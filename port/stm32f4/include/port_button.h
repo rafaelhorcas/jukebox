@@ -3,7 +3,7 @@
  * @brief Header for port_button.c file.
  * @author Rafael Horcas Mateo (r.horcasm@alumnos.upm.es)
  * @author Victor Mendizabal Gimeno (v.mendizabal@alumnos.upm.es)
- * @date fecha 16/02/2024
+ * @date 16/02/2024
  */
 
 #ifndef PORT_BUTTON_H_

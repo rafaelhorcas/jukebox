@@ -3,7 +3,7 @@
  * @brief Portable functions to interact with the USART FSM library.
  * @author Rafael Horcas Mateo (r.horcasm@alumnos.upm.es)
  * @author Victor Mendizabal Gimeno (v.mendizabal@alumnos.upm.es)
- * @date fecha 08/03/2024
+ * @date 08/03/2024
  */
 /* Includes ------------------------------------------------------------------*/
 /* Standard C libraries */
