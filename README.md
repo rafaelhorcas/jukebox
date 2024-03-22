@@ -14,7 +14,7 @@ En la primera versión solo está habilitado el botón de usuario, el cual está
 
 El sistema es capaz de identificar si se pulsa el botón y durante cuanto tiempo. Debido al funcionamiento del hardware del botón es necesario implementar un sistema anti-rebotes, que ha sido configurado a **150ms**. De esta manera, solo se pueden identificar como pulsaciones válidas aquellas con este tiempo mínimo.
 
-Para la detección de las pulsaciones se ha empleado la interrupción externa 13 (EXTI13).
+Para la detección de las pulsaciones se ha empleado la interrupción externa 13, **EXTI13**, que llama a la rutina de interrupción **EXTI15_10_IRQHandler**. Se desarrolla en el archivo de código fuente [interr.c](interr_8c.html).
 
 En la siguiente tabla se especifican las diferentes configuraciones necesarias para el correcto funcionamiento del botón de usuario.
 
@@ -31,7 +31,7 @@ En la siguiente tabla se especifican las diferentes configuraciones necesarias p
 
 Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para el botón. Se puede observar el código en los siguientes ficheros:
 
-Archivo de cabeceras: [fsm_button.h](fsm__button_8h.html) 
+Archivo de cabeceras: [fsm_button.h](fsm__button_8h.html)
 
 Archivo de código fuente: [fsm_button.c](fsm__button_8c.html)
 
@@ -42,7 +42,14 @@ Archivo de cabeceras: [port_button.h](port__button_8h.html)
 Archivo de código fuente: [port_button.c](port__button_8c.html)
 
 ## Version 2
-En la segunda versión se habilita la comunicación serie entre la placa y el ordenador mediante una USART. Se va a usar la **USART3**. La transmisión, **TX**, se encuentra en la **GPIO B**, en el **pin 10** y la recepción, **RX**, se encuentra en la **GPIO C**, en el **pin 11**.
+En la segunda versión se habilita la comunicación serie entre la placa y el ordenador mediante una USART. Esto servirá en un futuro para enviar diferentes comandos a la placa para diferentes funcionalidades.
+
+Se va a usar la **USART3**. La transmisión, **TX**, se encuentra en la **GPIO B**, en el **pin 10** y la recepción, **RX**, se encuentra en la **GPIO C**, en el **pin 11**.
+Para la comunicación se emplearan las propias interrupciones de la USART, RXNE y TXE. Estas llaman a la rutina de interrupción **USART3_IRQn**. Se desarrolla en el archivo de código fuente [interr.c](interr_8c.html).
+
+Se realiza el siguiente montaje con ayuda de una protoboard. Por el momento puede parecer innecesaria pero en versiones posteriores tendrá más usos. 
+El cable verde se corresponde con la conexión TX desde la placa. Por otro lado, el cable azul/morado se dedica a la conexión RX de la placa.
+![Montaje Versión 2](docs/assets/imgs/montaje_v2.jpeg)
 
 En la siguiente tabla se especifican las diferentes configuraciones necesarias para el correcto funcionamiento de la USART3.
 
@@ -61,7 +68,7 @@ En la siguiente tabla se especifican las diferentes configuraciones necesarias p
 | Priority | 2  |
 | Subpriority  | 0 | 
 
-Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para la trasmisión de datos. Se puede observar el código en los siguientes ficheros:
+Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para la trasmisión y recepción de datos. Se puede observar el código en los siguientes ficheros:
 
 Archivo de cabeceras: [fsm_usart.h](fsm__usart_8h.html) 
 
@@ -75,11 +82,4 @@ Archivo de código fuente: [port_usart.c](port__usart_8c.html)
 
 
 
-
-
-**Las imágenes se deben guardar en la carpeta `docs/assets/imgs/` y se pueden incluir en el documento de la siguiente manera:**
-
-```markdown
-![Texto alternativo](docs/assets/imgs/imagen.png)
-``` 
 
