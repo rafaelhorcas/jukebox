@@ -1,0 +1,98 @@
+\chapter{Jukebox}
+\hypertarget{md__r_e_a_d_m_e}{}\label{md__r_e_a_d_m_e}\index{Jukebox@{Jukebox}}
+\label{md__r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__r_e_a_d_m_e_autotoc_md0}%
+ \hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysection{\texorpdfstring{Authors}{Authors}}\label{md__r_e_a_d_m_e_autotoc_md1}
+
+\begin{DoxyItemize}
+\item {\bfseries{Rafael Horcas Mateo}} -\/ email\+: \href{mailto:r.horcasm@alumnos.upm.es}{\texttt{ r.\+horcasm@alumnos.\+upm.\+es}}
+\item {\bfseries{Víctor Mendizábal Gimeno}} -\/ email\+: \href{mailto:v.mendizabal@alumnos.upm.es}{\texttt{ v.\+mendizabal@alumnos.\+upm.\+es}}
+\end{DoxyItemize}
+
+En el proyecto Jukebox se establece una comunicación a través de un puerto USART usando STM32\+F446\+RE conectado a un ordenador. Esto permite la comunicación con un zumbador que puede reproducir melodías y cuenta con funcionalidades que se van desarrollando a lo largo del proyecto.
+
+The Jukebox project establishes communication via USART port using an STM32\+F446\+RE connected to a computer. This enables communication with a buzzer capable of playing melodies. It has more functionalities that are developed throughout the project.\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{Version 1}{Version 1}}\label{md__r_e_a_d_m_e_autotoc_md2}
+En la primera versión solo está habilitado el botón de usuario, el cual está conectado al {\bfseries{pin 13}} de la {\bfseries{GPIO C}}.
+
+El sistema es capaz de identificar si se pulsa el botón y durante cuanto tiempo. Debido al funcionamiento del hardware del botón es necesario implementar un sistema anti-\/rebotes, que ha sido configurado a {\bfseries{150ms}}. De esta manera, solo se pueden identificar como pulsaciones válidas aquellas con este tiempo mínimo.
+
+Para la detección de las pulsaciones se ha empleado la interrupción externa 13, {\bfseries{EXTI13}}, que llama a la rutina de interrupción {\bfseries{EXTI15\+\_\+10\+\_\+\+IRQHandler}}. Se desarrolla en el archivo de código fuente \href{interr_8c.html}{\texttt{ interr.\+c}}.
+
+En la siguiente tabla se especifican las diferentes configuraciones necesarias para el correcto funcionamiento del botón de usuario.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parámetro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Valor    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parámetro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Valor    }\\\cline{1-2}
+\endhead
+Pin   &PC13    \\\cline{1-2}
+Modo   &Input    \\\cline{1-2}
+Pull up/down   &No push no pull    \\\cline{1-2}
+EXTI   &EXTI13    \\\cline{1-2}
+ISR   &EXTI15\+\_\+10\+\_\+\+IRQHandler    \\\cline{1-2}
+Prioridad   &1    \\\cline{1-2}
+Subprioridad   &0    \\\cline{1-2}
+Tiempo antirebotes   &150ms   \\\cline{1-2}
+\end{longtabu}
+
+
+Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para el botón. Se puede observar el código en los siguientes ficheros\+:
+
+Archivo de cabeceras\+: \href{fsm__button_8h.html}{\texttt{ fsm\+\_\+button.\+h}}
+
+Archivo de código fuente\+: \href{fsm__button_8c.html}{\texttt{ fsm\+\_\+button.\+c}}
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32\+F446\+RE. Además, es posible añadir más botones si se desea para versiones posteriores.
+
+Archivo de cabeceras\+: \href{port__button_8h.html}{\texttt{ port\+\_\+button.\+h}}
+
+Archivo de código fuente\+: \href{port__button_8c.html}{\texttt{ port\+\_\+button.\+c}}\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysection{\texorpdfstring{Version 2}{Version 2}}\label{md__r_e_a_d_m_e_autotoc_md3}
+En la segunda versión se habilita la comunicación serie entre la placa y el ordenador mediante una USART. Esto servirá en un futuro para enviar diferentes comandos a la placa para diferentes funcionalidades.
+
+Se va a usar la {\bfseries{USART3}}. La transmisión, {\bfseries{TX}}, se encuentra en la {\bfseries{GPIO B}}, en el {\bfseries{pin 10}} y la recepción, {\bfseries{RX}}, se encuentra en la {\bfseries{GPIO C}}, en el {\bfseries{pin 11}}. Para la comunicación se emplearan las propias interrupciones de la USART, RXNE y TXE. Estas llaman a la rutina de interrupción {\bfseries{USART3\+\_\+\+IRQn}}. Se desarrolla en el archivo de código fuente \href{interr_8c.html}{\texttt{ interr.\+c}}.
+
+Se realiza el siguiente montaje con ayuda de una protoboard. Por el momento puede parecer innecesaria pero en versiones posteriores tendrá más usos. El cable verde se corresponde con la conexión TX desde la placa. Por otro lado, el cable azul/morado se dedica a la conexión RX de la placa. 
+
+En la siguiente tabla se especifican las diferentes configuraciones necesarias para el correcto funcionamiento de la USART3.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parámetro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Valor    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parámetro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Valor    }\\\cline{1-2}
+\endhead
+Baudrate   &9600    \\\cline{1-2}
+Data bits   &8    \\\cline{1-2}
+Stop bits   &1    \\\cline{1-2}
+Parity   &None    \\\cline{1-2}
+Flow control   &None    \\\cline{1-2}
+USART   &USART3    \\\cline{1-2}
+Pins   &PB10 (TX) and PC11 (RX)    \\\cline{1-2}
+Mode   &Alternative    \\\cline{1-2}
+Pull up/down   &Pull up    \\\cline{1-2}
+ISR   &USART3\+\_\+\+IRQn    \\\cline{1-2}
+Priority   &2    \\\cline{1-2}
+Subpriority   &0   \\\cline{1-2}
+\end{longtabu}
+
+
+Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para la trasmisión y recepción de datos. Se puede observar el código en los siguientes ficheros\+:
+
+Archivo de cabeceras\+: \href{fsm__usart_8h.html}{\texttt{ fsm\+\_\+usart.\+h}}
+
+Archivo de código fuente\+: \href{fsm__usart_8c.html}{\texttt{ fsm\+\_\+usart.\+c}}
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32\+F446\+RE. Además, es posible añadir más USARTs si se desea para versiones posteriores.
+
+Archivo de cabeceras\+: \href{port__usart_8h.html}{\texttt{ port\+\_\+usart.\+h}}
+
+Archivo de código fuente\+: \href{port__usart_8c.html}{\texttt{ port\+\_\+usart.\+c}} 
