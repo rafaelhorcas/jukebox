@@ -18,18 +18,18 @@
 
 /* Defines and enums ----------------------------------------------------------*/
 /* Defines */
-#define 	BUZZER_0_ID
-#define 	BUZZER_0_GPIO
-#define 	BUZZER_0_PIN
-#define 	BUZZER_PWM_DC
+#define BUZZER_0_ID 0x00    /*!<Buzzer Identifier*/
+#define BUZZER_0_GPIO GPIOA /*!<Buzzer GPIO port*/
+#define BUZZER_0_PIN 0x06   /*!<Button GPIO pin*/
+#define BUZZER_PWM_DC 0.5   /*!<Duty cycle*/
 
 /* Typedefs --------------------------------------------------------------------*/
 typedef struct
 {
-    GPIO_TypeDef *p_port;   /*!<GPIO where the button is connected*/
-    uint8_t pin;            /*!<Pin where the button is connected*/
+    GPIO_TypeDef *p_port;   /*!<GPIO where the buzzer is connected*/
+    uint8_t pin;            /*!<Pin where the buzzer is connected*/
     uint8_t alt_func;       /*!<Alternate function value for PWM according to the Alternate function table of the datasheet*/
-    bool note_end           /*!<Flag to indicate that the note has ended*/
+    bool note_end;          /*!<Flag to indicate that the note has ended*/
 } port_buzzer_hw_t;         
 
 /* Global variables */

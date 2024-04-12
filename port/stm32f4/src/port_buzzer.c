@@ -13,12 +13,10 @@
 #include "port_buzzer.h"
 
 /* Global variables */
-#define   ALT_FUNC2_TIM3
+#define ALT_FUNC2_TIM3 0x02
 
-
-// Buscar en el datasheet alt_func
 port_buzzer_hw_t buzzers_arr[]= {
-    [BUZZER_0_ID] = {.p_port = BUZZER_0_GPIO, .pin = BUZZER_0_PIN, .alt_func = 0x00, .note_end = false},
+    [BUZZER_0_ID] = {.p_port = BUZZER_0_GPIO, .pin = BUZZER_0_PIN, .alt_func = ALT_FUNC2_TIM3, .note_end = false},
 };
 
 /* Private functions */
@@ -52,32 +50,88 @@ static void _timer_pwm_setup(uint32_t buzzer_id){
 }	
 
 
-
-
-
 /* Public functions -----------------------------------------------------------*/
 
 void port_buzzer_init(uint32_t buzzer_id)
 {
   port_buzzer_hw_t buzzer = buzzers_arr[buzzer_id];
-
-  /* TO-DO alumnos */
-
+  port_system_gpio_config(buzzers_arr[buzzer_id].p_port, buzzers_arr[buzzer_id].pin, GPIO_MODE_ALTERNATE, GPIO_PUPDR_NOPULL);
+  port_system_gpio_config_alternate(buzzers_arr[buzzer_id].p_port, buzzers_arr[buzzer_id].pin, buzzers_arr[buzzer_id].alt_func);
+  _timer_duration_setup(buzzer_id);
+  _timer_pwm_setup(buzzer_id);
 }
 
 bool port_buzzer_get_note_timeout(uint32_t buzzer_id){
-
+  if (buzzer_id == BUZZER_0_ID){
+    return buzzers_arr[buzzer_id].note_end;
+  }
+  return false;
 }
 
 void port_buzzer_set_note_duration(uint32_t buzzer_id, uint32_t duration_ms){
-
+  //1. Deshabilitar el timer y resetear la cuenta
+  TIM2->CR1 &= ~TIM_CR1_CEN;
+  TIM2->CNT = 0;
+  //2. Convertir a double duration_ms y SystemCoreClock 
+  double sysclk_as_double = (double)SystemCoreClock;
+  double s_as_double = (double)duration_ms/1000;
+  //3. Calcular el valor inicial de PSC
+  double ARR_max = 65535.0; 
+  double PSC_min = round(((sysclk_as_double * s_as_double) / (ARR_max + 1)) - 1);
+  //4. Recalcular ARR 
+  double ARR = round(((sysclk_as_double * s_as_double) / (PSC_min + 1)) - 1);
+  //5. Comprobar que ARR>65535.0
+  if(ARR > 65535.0){
+    PSC_min++;
+    ARR = round(((sysclk_as_double * s_as_double) / (PSC_min + 1)) - 1);
+  }
+  //6. Precargar ARR y PSC en los registros correspondientes
+  TIM2->ARR = ARR;
+  TIM2->PSC = PSC_min;
+  //7. Cargar ARR y PSC en los registros correspondientes
+  TIM2->EGR = TIM_EGR_UG;
+  //8. Configurar flag note_end
+  buzzers_arr[buzzer_id].note_end = true;
+  //9. Habilitar el timer
+  TIM2->CR1 |= TIM_CR1_CEN;
 }
 
-
 void port_buzzer_set_note_frequency	(	uint32_t buzzer_id, double frequency_hz){
+  //1. Si la frecuencia es 0 se deshabilita el timer
+  if(frequency_hz == 0){
+  TIM3->CR1 &= ~TIM_CR1_CEN;
+  return;   
+  }
 
+  //2.
+  double sysclk_as_double = (double)SystemCoreClock;
+  double ARR_max = 65535.0; 
+  double PSC_min = round(((sysclk_as_double * (1/frequency_hz)) / (ARR_max + 1)) - 1);
+  //Recalcular ARR 
+  double ARR = round(((sysclk_as_double * (1/frequency_hz)) / (PSC_min + 1)) - 1);
+  //Comprobar que ARR>65535.0
+  if(ARR > 65535.0){
+    PSC_min++;
+    ARR = round(((sysclk_as_double * (1/frequency_hz)) / (PSC_min + 1)) - 1);
+  }
+  //Precargar ARR y PSC en los registros correspondientes
+  TIM3->ARR = ARR;
+  TIM3->PSC = PSC_min;
+
+  //3. PWM pulse width to BUZZER_PWM_DC.
+  TIM3->CCR1 = BUZZER_PWM_DC * (ARR + 1); 
+  //4.
+  TIM3->EGR = TIM_EGR_UG;
+  //5.
+  TIM3->CCER &= ~ TIM_CCER_CC1E;
+  //6.
+  TIM3->CR1 |= TIM_CR1_CEN;
 }
 
 void port_buzzer_stop(uint32_t buzzer_id){
-
+  if(buzzer_id == BUZZER_0_ID){
+    TIM2-> CR1 &= ~TIM_CR1_CEN;
+    TIM2-> CR1 &= ~TIM_CR1_CEN;
+  }
+  return;
 }
