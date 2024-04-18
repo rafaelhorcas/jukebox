@@ -40,9 +40,9 @@ static bool check_player_start (fsm_t * p_this){
 }
 
 /**
- * @brief 
+ * @brief Check if the end of the melody has been reached
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  * @return true 
  * @return false 
  */
@@ -52,9 +52,9 @@ static bool check_end_melody(fsm_t * p_this){
 }	
 
 /**
- * @brief 
+ * @brief Check if the note has ended
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  * @return true 
  * @return false 
  */
@@ -64,9 +64,9 @@ static bool check_note_end(fsm_t * p_this){
 }
 
 /**
- * @brief 
+ * @brief Check if the player is set to pause.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  * @return true 
  * @return false 
  */
@@ -76,9 +76,9 @@ static bool check_pause(fsm_t * p_this){
 }
 
 /**
- * @brief 
+ * @brief Check if the player is set to play a note.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  * @return true 
  * @return false 
  */
@@ -88,9 +88,9 @@ static bool check_play_note(fsm_t * p_this){
 }
 
 /**
- * @brief 
+ * @brief Check if the player is set to stop.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  * @return true 
  * @return false 
  */
@@ -100,9 +100,9 @@ static bool check_player_stop(fsm_t * p_this){
 }
 
 /**
- * @brief 
+ * @brief Check if the player is set to play.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  * @return true 
  * @return false 
  */
@@ -113,9 +113,9 @@ static bool check_resume(fsm_t * p_this){
 
 /* State machine output or action functions */
 /**
- * @brief 
+ * @brief Stop the player by stopping the PWM and the timer.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct 
  */
 static void do_end_melody(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
@@ -127,9 +127,9 @@ static void do_end_melody(fsm_t * p_this){
 /**
  * @brief Construct a new start note object
  * 
- * @param p_this 
- * @param freq 
- * @param duration 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct 
+ * @param freq Frequency of the note to play.
+ * @param duration Duration of the note to play.
  */
 void _start_note(fsm_t * p_this, double freq, uint32_t duration){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
@@ -138,9 +138,9 @@ void _start_note(fsm_t * p_this, double freq, uint32_t duration){
 }
 
 /**
- * @brief 
+ * @brief Start a melody player by setting the PWM frequency and the timer duration of the first note.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  */
 static void do_melody_start(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
@@ -152,9 +152,9 @@ static void do_melody_start(fsm_t * p_this){
 
 
 /**
- * @brief 
+ * @brief Check if the note has ended.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  */
 static void do_note_end(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
@@ -162,9 +162,9 @@ static void do_note_end(fsm_t * p_this){
 }
 
 /**
- * @brief 
+ * @brief Pause the player by stopping the PWM and the timer.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  */
 static void do_pause(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
@@ -172,9 +172,9 @@ static void do_pause(fsm_t * p_this){
 }
 
 /**
- * @brief 
+ * @brief Update the player with a new note by retrieving the frequency and the duration of the next note of the melody.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  */
 static void do_play_note(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
@@ -186,18 +186,18 @@ static void do_play_note(fsm_t * p_this){
 }
 
 /**
- * @brief 
+ * @brief Start the player by starting a melody.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct 
  */
 static void do_player_start(fsm_t * p_this){
     do_melody_start(p_this);
 }
 
 /**
- * @brief 
+ * @brief Stop the player by stopping the PWM and the timer.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct
  */
 static void do_player_stop(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
@@ -205,6 +205,9 @@ static void do_player_stop(fsm_t * p_this){
     p_fsm->note_index = 0;
 }
 
+/**
+ * @brief Array representing the transitions table of the fsm_buzzer.
+ */
 fsm_trans_t fsm_trans_buzzer[] = {
     { WAIT_START, check_player_start, WAIT_NOTE, do_player_start},
     { WAIT_NOTE, check_note_end, PLAY_NOTE, do_note_end},
