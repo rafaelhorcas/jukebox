@@ -10,6 +10,7 @@
 #include "port_system.h"
 #include "port_button.h"
 #include "port_usart.h"
+#include "port_buzzer.h"
 
 //------------------------------------------------------
 // INTERRUPT SERVICE ROUTINES
@@ -64,5 +65,10 @@ void USART3_IRQHandler(void){
         }
     }
 }
+
+void TIM2_IRQHandler(void){
+    TIM2->SR &= ~ TIM_SR_UIF;
+    buzzers_arr[BUZZER_0_ID].note_end = true;
+}	 
 
 

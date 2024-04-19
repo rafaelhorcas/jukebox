@@ -48,7 +48,7 @@ static bool check_player_start (fsm_t * p_this){
  */
 static bool check_end_melody(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
-    return (p_fsm->note_index > p_fsm->p_melody->melody_length);
+    return (p_fsm->note_index >= p_fsm->p_melody->melody_length);
 }	
 
 /**
@@ -84,7 +84,7 @@ static bool check_pause(fsm_t * p_this){
  */
 static bool check_play_note(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
-    return (p_fsm->note_index <= p_fsm->p_melody->melody_length && p_fsm->user_action == PLAY);
+    return ((p_fsm->note_index <= p_fsm->p_melody->melody_length) && (p_fsm->user_action == PLAY));
 }
 
 /**
@@ -147,7 +147,7 @@ static void do_melody_start(fsm_t * p_this){
     double first_note = p_fsm->p_melody->p_notes[0];
     double first_duration = p_fsm->p_melody-> p_durations[0];
     _start_note(p_this, first_note, first_duration);
-    p_fsm->note_index ++;
+    p_fsm->note_index = 1;
 }
 
 
@@ -207,6 +207,7 @@ static void do_player_stop(fsm_t * p_this){
 
 /**
  * @brief Array representing the transitions table of the fsm_buzzer.
+ * @image 
  */
 fsm_trans_t fsm_trans_buzzer[] = {
     { WAIT_START, check_player_start, WAIT_NOTE, do_player_start},
@@ -214,8 +215,8 @@ fsm_trans_t fsm_trans_buzzer[] = {
     { PAUSE_NOTE, check_resume, PLAY_NOTE, NULL},
     { WAIT_MELODY, check_melody_start, WAIT_NOTE, do_melody_start},
     { PLAY_NOTE, check_player_stop, WAIT_START, do_player_stop},
-    { PLAY_NOTE, check_play_note, WAIT_NOTE, do_play_note},
     { PLAY_NOTE, check_end_melody, WAIT_MELODY, do_end_melody},
+    { PLAY_NOTE, check_play_note, WAIT_NOTE, do_play_note},
     { PLAY_NOTE, check_pause, PAUSE_NOTE, do_pause},
     { -1 , NULL , -1, NULL }
 };
