@@ -78,4 +78,7 @@ extern const melody_t happy_birthday_melody;
 // Tetris melody
 extern const melody_t tetris_melody;
 
+// Ave Maria by David Bisbal melody
+extern const melody_t avemaria_melody;
+
 #endif /* MELODIES_H_ */

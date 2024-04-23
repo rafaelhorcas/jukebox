@@ -107,3 +107,36 @@ const melody_t scale_melody = {.p_name = "scale",
                                .p_notes = (double *)scale_melody_notes,
                                .p_durations = (uint16_t *)scale_melody_durations,
                                .melody_length = SCALE_MELODY_LENGTH};
+
+
+// Ave Maria by David Bisbal melody
+#define AVEMARIA_LENGTH 44 /*!< Ave Maria by David Bisbal melody length */
+
+/**
+ * @brief Ave Maria by David Bisbal melody notes.
+ *
+ * This array contains the frequencies of the notes for the Ave Maria by David Bisbal song.
+ * The notes are defined as frequency values in Hertz, and they are arranged in the order they are played in the song.
+ */
+static const double avemaria_notes[AVEMARIA_LENGTH] = {
+    MI5, RE5, DO5, RE5, DO5, MI5, MI5, RE5, DO5, RE5, DO5, MI5, RE5, DO5, RE5, MI5, FA5, FA5, MI5, DO5, RE5, DO5, MI5, RE5, DO5, RE5, DO5, MI5, MI5, RE5, DO5, RE5, DO5, MI5, RE5, DO5, RE5, MI5, FA5, FA5, MI5, DO5, RE5, DO5};
+
+/** 
+ * @brief Ave Maria by David Bisbal melody durations in miliseconds.
+ *
+ * This array contains the duration of each note in the Ave Maria by David Bisbal song.
+ * The durations are defined in milliseconds, and they are arranged in the order they are played in the song.
+ */
+static const uint16_t avemaria_durations[AVEMARIA_LENGTH] = {
+    200, 200, 200, 200, 400, 400, 200, 200, 200, 200, 600, 200, 200, 200, 200, 400, 400, 200, 200, 200, 400, 400, 200, 200, 200, 200, 400, 400, 200, 200, 200, 200, 600, 200, 200, 200, 200, 400, 400, 200, 200, 200, 400, 400 };
+
+/**
+ * @brief Ave Maria by David Bisbal melody struct.
+ * 
+ * This struct contains the information of the Ave Maria by David Bisbal melody.
+ * It is used to play the melody using the buzzer.
+ */
+const melody_t avemaria_melody = {.p_name = "Ave Maria by David Bisbal",
+                                .p_notes = (double *)avemaria_notes,
+                                .p_durations = (uint16_t *)avemaria_durations,
+                                .melody_length = AVEMARIA_LENGTH};

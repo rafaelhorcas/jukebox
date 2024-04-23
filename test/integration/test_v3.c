@@ -93,9 +93,17 @@ int main(void)
                     {
                         fsm_buzzer_set_melody(p_fsm_buzzer, &scale_melody);
                     }
+                    /*
                     else
                     {
                         fsm_buzzer_set_melody(p_fsm_buzzer, &tetris_melody);
+                    }
+                    printf("Playing: %s\n", (((fsm_buzzer_t *)(p_fsm_buzzer))->p_melody)->p_name);
+                    counter++;
+                    */
+                   else
+                    {
+                        fsm_buzzer_set_melody(p_fsm_buzzer, &avemaria_melody);
                     }
                     printf("Playing: %s\n", (((fsm_buzzer_t *)(p_fsm_buzzer))->p_melody)->p_name);
                     counter++;
