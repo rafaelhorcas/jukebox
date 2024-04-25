@@ -32,7 +32,8 @@ void SysTick_Handler(void){
  * First, this function identifies the pin which has raised the interruption. Then, perform the desired action. Before leaving it cleans the interrupt pending register.
  */
 void EXTI15_10_IRQHandler ( void ){
-   /* ISR user button */
+    port_system_systick_resume();
+    /* ISR user button */
     if (EXTI -> PR & BIT_POS_TO_MASK (buttons_arr [BUTTON_0_ID].pin))
     {
         bool nivel = port_system_gpio_read(buttons_arr [BUTTON_0_ID].p_port, buttons_arr [BUTTON_0_ID].pin);
@@ -53,6 +54,7 @@ void EXTI15_10_IRQHandler ( void ){
  * 
  */
 void USART3_IRQHandler(void){
+    port_system_systick_resume();
     if (USART_0->CR1 & USART_CR1_RXNEIE){
         if (USART_0->SR & USART_SR_RXNE){
             port_usart_store_data(USART_0_ID);

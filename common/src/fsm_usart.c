@@ -146,10 +146,10 @@ void fsm_usart_reset_input_data (fsm_t *p_this){
     p_fsm -> data_received = false;
 }
 
-/*bool fsm_usart_check_activity (fsm_t *p_this){
+bool fsm_usart_check_activity (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
 }
-*/
+
 
 void fsm_usart_disable_rx_interrupt (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);

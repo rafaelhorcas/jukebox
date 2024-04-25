@@ -27,8 +27,8 @@
  * 
  */
 enum FSM_USART {
-     WAIT_DATA = 0, /*!<Starting state. Also comes here when data has been send or read*/
-     SEND_DATA      /*!<State to send data*/
+    WAIT_DATA = 0, /*!<Starting state. Also comes here when data has been send or read*/
+    SEND_DATA      /*!<State to send data*/
 };
 
 /* Typedefs --------------------------------------------------------------------*/

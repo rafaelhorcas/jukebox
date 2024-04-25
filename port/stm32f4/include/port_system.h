@@ -113,6 +113,18 @@ void port_system_delay_ms(uint32_t ms);
  */
 void port_system_delay_until_ms(uint32_t *p_t, uint32_t ms);
 
+/**
+ * @brief Resume Tick increment.
+ * 
+ */
+void port_system_systick_resume();
+
+/**
+ * @brief Suspend Tick increment.
+ * 
+ */
+void port_system_systick_suspend();
+
 /** @verbatim
       ==============================================================================
                               ##### How to use GPIOs #####
@@ -219,24 +231,13 @@ void port_system_gpio_exti_disable(uint8_t pin);
 
 /**
  * @brief Read the digital value of a GPIO.
- * 
- * @param p_port 
- * @param pin 
- * @return true 
- * @return false 
- */
-bool port_system_gpio_read (GPIO_TypeDef *p_port, uint8_t pin);
-
-/**
- * @brief Read the digital value of a GPIO.
  *
  * @param p_port Port of the GPIO (CMSIS struct like)
  * @param pin	Pin/line of the GPIO (index from 0 to 15)
  * @return true if the GPIO was HIGH
  * @return false if the GPIO was LOW
 */
-
-void port_system_gpio_write	(GPIO_TypeDef *p_port, uint8_t pin, bool value);	
+bool port_system_gpio_read (GPIO_TypeDef *p_port, uint8_t pin);
 
 /**
  * @brief Write a digital value in a GPIO automatically.
@@ -246,8 +247,8 @@ void port_system_gpio_write	(GPIO_TypeDef *p_port, uint8_t pin, bool value);
  * @param value Boolen value to set de GPIO to HIGH(1,true) or LOW(0,false)
  * @retval None
 */
+void port_system_gpio_write	(GPIO_TypeDef *p_port, uint8_t pin, bool value);	
 
-void port_system_gpio_toggle (GPIO_TypeDef *p_port, uint8_t pin);
 /**
  * @brief Toggle the value of a GPIO
  *
@@ -255,4 +256,24 @@ void port_system_gpio_toggle (GPIO_TypeDef *p_port, uint8_t pin);
  * @param pin	Pin/line of the GPIO (index from 0 to 15)
  * @retval None
 */
+void port_system_gpio_toggle (GPIO_TypeDef *p_port, uint8_t pin);
+
+/**
+ * @brief Set the system in sleep mode for low power consumption.
+ * 
+ */
+void port_system_power_sleep();
+
+/**
+ * @brief Set the system in stop mode for low power consumption.
+ * 
+ */
+void port_system_power_stop();
+
+/**
+ * @brief Enable low power consumption in sleep mode.
+ * 
+ */
+void port_system_sleep();
+
 #endif /* PORT_SYSTEM_H_ */

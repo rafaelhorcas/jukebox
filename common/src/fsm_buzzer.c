@@ -242,11 +242,10 @@ void fsm_buzzer_init(fsm_t *p_this, uint32_t buzzer_id)
     port_buzzer_init(buzzer_id);
 }
 
-/* V4
 bool fsm_buzzer_check_activity(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
+    
 }
-*/
 
 uint8_t fsm_buzzer_get_action(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
