@@ -244,7 +244,7 @@ void fsm_buzzer_init(fsm_t *p_this, uint32_t buzzer_id)
 
 bool fsm_buzzer_check_activity(fsm_t * p_this){
     fsm_buzzer_t *p_fsm = (fsm_buzzer_t *)(p_this);
-    
+    return(p_fsm->user_action == PLAY);
 }
 
 uint8_t fsm_buzzer_get_action(fsm_t * p_this){

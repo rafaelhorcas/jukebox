@@ -77,6 +77,6 @@ fsm_t * fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_
  * @param next_song_press_time_ms Button press time in milliseconds to change to the next song.
  * @return fsm_t* A pointer to the button FSM
  */
-fsm_t * fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms);	
+void fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms);	
 
 #endif /* FSM_JUKEBOX_H_ */
