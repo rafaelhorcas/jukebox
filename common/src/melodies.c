@@ -140,3 +140,38 @@ const melody_t avemaria_melody = {.p_name = "Ave Maria by David Bisbal",
                                 .p_notes = (double *)avemaria_notes,
                                 .p_durations = (uint16_t *)avemaria_durations,
                                 .melody_length = AVEMARIA_LENGTH};
+
+// Himno del Partido Popular (PP) melody
+#define PP_HYMN_LENGTH 72 /*!< PP Hymn melody length */
+
+/**
+ * @brief PP Hymn melody notes.
+ *
+ * This array contains the frequencies of the notes for the PP Hymn melody.
+ * The notes are defined as frequency values in Hertz, and they are arranged in the order they are played in the melody.
+ */
+    static const double pp_hymn_notes[PP_HYMN_LENGTH] = {
+        DO4, MI4, DO4, FA4, DO4, MI4, RE4, DO4, FA4, FA4, DO4, MI4, SOL4, DO5, SOL4, LA4, SOL4, FA4, RE5, RE5, DO5, MI5, DO5, FA5, DO5, MI5, RE5, DO5, FA5, FA5, DO5, MI5, DO5, FA5, DO5, MI5, RE5, DO5, RE5,
+        DO4, MI4, DO4, FA4, DO4, MI4, RE4, DO4, FA4, FA4, DO4, MI4, SOL4, DO5, SOL4, LA4, SOL4, FA4, RE5, RE5, DO5, MI5, SI4, RE5, LA4, DO5, SI4, LA4, FA5, MI5, DO5, LA4, DO5
+
+};
+/** 
+ * @brief PP Hymn melody durations in milliseconds.
+ *
+ * This array contains the duration of each note in the PP Hymn melody.
+ * The durations are defined in milliseconds, and they are arranged in the order they are played in the melody.
+ */
+static const uint16_t pp_hymn_durations[PP_HYMN_LENGTH] = {
+    200, 600, 200, 600, 200, 200, 200, 200, 400, 400, 200, 600, 200, 600, 200, 200, 200, 200, 400, 400, 200, 600, 200, 600, 200, 200, 200, 200, 400, 400, 200, 600, 200, 600, 200, 200, 200, 200, 800,
+    200, 600, 200, 600, 200, 200, 200, 200, 400, 400, 200, 600, 200, 600, 200, 200, 200, 200, 400, 400, 200, 600, 200, 600, 200, 200, 200, 200, 1600, 200, 200, 200, 200  
+};
+// 200 corchea, 400 negra, 600 negra+punto, 16000 redonda
+/*
+ * 
+ * This struct contains the information of the PP Hymn melody.
+ * It is used to play the melody using the buzzer.
+ */
+const melody_t pp_hymn_melody = {.p_name = "PP Hymn",
+                                  .p_notes = (double *)pp_hymn_notes,
+                                  .p_durations = (uint16_t *)pp_hymn_durations,
+                                  .melody_length = PP_HYMN_LENGTH};

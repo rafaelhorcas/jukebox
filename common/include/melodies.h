@@ -81,4 +81,7 @@ extern const melody_t tetris_melody;
 // Ave Maria by David Bisbal melody
 extern const melody_t avemaria_melody;
 
+// Himno PP
+extern const melody_t pp_hymn_melody;
+
 #endif /* MELODIES_H_ */

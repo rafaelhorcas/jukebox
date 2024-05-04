@@ -100,10 +100,17 @@ int main(void)
                     }
                     printf("Playing: %s\n", (((fsm_buzzer_t *)(p_fsm_buzzer))->p_melody)->p_name);
                     counter++;
-                    */
+                    
                    else
                     {
                         fsm_buzzer_set_melody(p_fsm_buzzer, &avemaria_melody);
+                    }
+                    printf("Playing: %s\n", (((fsm_buzzer_t *)(p_fsm_buzzer))->p_melody)->p_name);
+                    counter++;
+                    */
+                    else
+                    {
+                        fsm_buzzer_set_melody(p_fsm_buzzer, &pp_hymn_melody);
                     }
                     printf("Playing: %s\n", (((fsm_buzzer_t *)(p_fsm_buzzer))->p_melody)->p_name);
                     counter++;
