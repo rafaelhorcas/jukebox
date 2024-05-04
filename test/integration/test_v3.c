@@ -25,6 +25,7 @@
 #define LD2_PORT GPIOA
 #define LD2_PIN 5
 #define LD2_DELAY_MS 100
+#define MAX_MELODIES 5
 
 /**
  * @brief Main test function. Read the terminal for instructions.
@@ -53,6 +54,8 @@ int main(void)
     printf("5. There are two melodies to play: 'Scale' and 'Tetris'. They will alternate each time the button is pressed.\n");
     printf("6. Press the button to play the first melody.\n");
     printf("7. Ensure that the BUZZER is playing the melody and its name is shown in the terminal. If not, check the connections and the code. Connect the pin to an oscilloscope to check the signal.\n");
+    const melody_t *melodies[MAX_MELODIES] = {&scale_melody, &tetris_melody, &happy_birthday_melody, &avemaria_melody, &pp_hymn_melody};
+    size_t num_melodies = 5;
 
     while (1)
     {
@@ -74,8 +77,8 @@ int main(void)
             }
             else if (duration >= TEST_BUTTON_PLAY_TIME && duration < TEST_BUTTON_STOP_TIME)
             {
-                static uint32_t counter = 0;
-
+                //static uint32_t counter = 0;
+                static uint32_t current_melody_index = 0; // Índice de la melodía actual
                 // Get previous action
                 uint16_t previous_action = fsm_buzzer_get_action(p_fsm_buzzer);
 
@@ -88,32 +91,9 @@ int main(void)
                 {
                     fsm_buzzer_set_action(p_fsm_buzzer, PLAY);
                     printf("Duration: %ld ms. User action: PLAY next song\n", duration);
-
-                    if (counter % 2 == 0)
-                    {
-                        fsm_buzzer_set_melody(p_fsm_buzzer, &scale_melody);
-                    }
-                    /*
-                    else
-                    {
-                        fsm_buzzer_set_melody(p_fsm_buzzer, &tetris_melody);
-                    }
-                    printf("Playing: %s\n", (((fsm_buzzer_t *)(p_fsm_buzzer))->p_melody)->p_name);
-                    counter++;
-                    
-                   else
-                    {
-                        fsm_buzzer_set_melody(p_fsm_buzzer, &avemaria_melody);
-                    }
-                    printf("Playing: %s\n", (((fsm_buzzer_t *)(p_fsm_buzzer))->p_melody)->p_name);
-                    counter++;
-                    */
-                    else
-                    {
-                        fsm_buzzer_set_melody(p_fsm_buzzer, &pp_hymn_melody);
-                    }
-                    printf("Playing: %s\n", (((fsm_buzzer_t *)(p_fsm_buzzer))->p_melody)->p_name);
-                    counter++;
+                    fsm_buzzer_set_melody(p_fsm_buzzer, melodies[current_melody_index]);
+                    printf("Playing: %s\n", melodies[current_melody_index]->p_name);
+                    current_melody_index = (current_melody_index + 1) % num_melodies;   
                 }
             }
             else if (duration >= TEST_BUTTON_STOP_TIME)
