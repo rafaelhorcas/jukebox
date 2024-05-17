@@ -123,5 +123,6 @@ void fsm_button_init(fsm_t *p_this, uint32_t debounce_time, uint32_t button_id){
 }
 
 bool fsm_button_check_activity(fsm_t *p_this){
-    return(p_this->current_state != BUTTON_RELEASED);
+    fsm_button_t *p_button = (fsm_button_t *)p_this; 
+    return(p_button->f.current_state != BUTTON_RELEASED);
 }

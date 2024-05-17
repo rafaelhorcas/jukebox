@@ -87,7 +87,7 @@ void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     }
     p_fsm_jukebox->p_melody= p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name;
     printf("Playing %s\n", p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name);
-    fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &scale_melody);
+    fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
 }
 
@@ -100,13 +100,13 @@ void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
  */
 void _execute_command(fsm_jukebox_t *p_fsm_jukebox, char *p_command, char *p_param ){
     if(!strcmp(p_command,"play")){
-        p_fsm_jukebox->p_fsm_buzzer->current_state = PLAY;        
+        fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);      
     }
     else if(!strcmp(p_command, "stop")){
-        p_fsm_jukebox->p_fsm_buzzer->current_state = STOP;              
+        fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);        
     }
     else if(!strcmp(p_command, "pause")){
-        p_fsm_jukebox->p_fsm_buzzer->current_state = PAUSE;               
+        fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PAUSE);               
     }
     else if(!strcmp(p_command, "speed")){
         double param = atof(p_param);
@@ -118,11 +118,11 @@ void _execute_command(fsm_jukebox_t *p_fsm_jukebox, char *p_command, char *p_par
     else if(!strcmp(p_command, "select")){
         uint32_t melody_selected = atoi(p_param);
         if(p_fsm_jukebox->melodies[melody_selected].melody_length != 0){
-            p_fsm_jukebox->p_fsm_buzzer->current_state = STOP;
+            fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);            
             p_fsm_jukebox->melody_idx++;
             fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
             p_fsm_jukebox->p_melody= p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name;
-            p_fsm_jukebox->p_fsm_buzzer->current_state = PLAY;
+            fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
         }
         else{
             fsm_usart_set_out_data(p_fsm_jukebox->p_fsm_usart, "Error: Melody not found\n");
@@ -139,10 +139,6 @@ void _execute_command(fsm_jukebox_t *p_fsm_jukebox, char *p_command, char *p_par
     return;
 }	
 
-	
-
-
-
 /* State machine input or transition functions */
 /**
  * @brief Check if any of the elements of the system is active
@@ -153,9 +149,13 @@ void _execute_command(fsm_jukebox_t *p_fsm_jukebox, char *p_command, char *p_par
  */
 static bool check_activity(fsm_t *p_this){
     fsm_jukebox_t *p_fsm_jukebox = (fsm_jukebox_t  *)(p_this);
-    return (fsm_button_check_activity(p_fsm_jukebox->p_fsm_button) || fsm_buzzer_check_activity(p_fsm_jukebox->p_fsm_buzzer) || fsm_usart_check_activity(p_fsm_jukebox->p_fsm_usart));
+    //return (fsm_button_check_activity(p_fsm_jukebox->p_fsm_button) || fsm_buzzer_check_activity(p_fsm_jukebox->p_fsm_buzzer) || fsm_usart_check_activity(p_fsm_jukebox->p_fsm_usart));
+    bool a = fsm_button_check_activity(p_fsm_jukebox->p_fsm_button);
+    bool b = fsm_buzzer_check_activity(p_fsm_jukebox->p_fsm_buzzer);
+    bool c = fsm_usart_check_activity(p_fsm_jukebox->p_fsm_usart);
+    return (a || b || c);
 }
-//La melodía se para antes de tiempo, se está llamando a sleep prematuramente. primero comprobar la funcion de la tabla sleep al comentarlo funciona bien. En tal caso comprobar individualmente las check activity. Poner ifs separaditos y monos en lugar de el return con el tochaco. Luego poner return a or b or c en check activity de fsm jukebox.
+//La melodía se para antes de tiempo, se está llamando a sleep prematuramente. primero comprobar la funcion de la tabla sleep al comentarlo funciona bien. En tal caso comprobar individualmente las check activity. Poner ifs separados en lugar del return con el tochaco. Luego poner return a or b or c en check activity de fsm jukebox.
 
 /**
  * @brief Check if the USART has received data
@@ -228,8 +228,6 @@ static bool check_on(fsm_t *p_this){
 static bool check_off(fsm_t *p_this){
     return check_on(p_this);
 }
-
-
 
 /* State machine output or action functions */
 /**

@@ -148,7 +148,7 @@ void fsm_usart_reset_input_data (fsm_t *p_this){
 
 bool fsm_usart_check_activity (fsm_t *p_this){
     fsm_usart_t *p_fsm = (fsm_usart_t *)(p_this);
-    return((p_this->current_state == SEND_DATA) || (p_fsm->data_received));
+    return((p_fsm->f.current_state == SEND_DATA) || (p_fsm->data_received));
 }
 
 
