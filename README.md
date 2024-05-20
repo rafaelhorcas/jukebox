@@ -21,13 +21,13 @@ En la siguiente tabla se especifican las diferentes configuraciones necesarias p
 | Parámetro | Valor | 
 | --------- | --------- | 
 | Pin   | PC13   | 
-| Modo   | Input   | 
+| Mode   | Input   | 
 | Pull up/down   | No push no pull   | 
 | EXTI   | EXTI13   | 
 | ISR   | EXTI15_10_IRQHandler  | 
-| Prioridad  | 1  |
-| Subprioridad   | 0 | 
-| Tiempo antirebotes| 150ms  | 
+| Priority  | 1  |
+| Subpriority   | 0 | 
+| Debounce time     | 150ms  | 
 
 Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para el botón. Se puede observar el código en los siguientes ficheros:
 
@@ -80,6 +80,50 @@ Archivo de cabeceras: [port_usart.h](port__usart_8h.html)
 
 Archivo de código fuente: [port_usart.c](port__usart_8c.html)
 
+## Version 3
+En la segunda versión se añade un buzzer para reproducción de melodías.
 
+Se va a usar el **pin 10** de la **GPIO A**. Será necesario además el uso de PWM. Para ello se van a usar dos fuentes de interrupciones, los timers **TIM2** y **TIM3**. El primero se encargará de establecer la frecuencia de la nota a reproducir. El segundo se encargará de establecer la duración de la nota reproduciéndose.
+
+////Para la comunicación se emplearan las propias interrupciones de la USART, RXNE y TXE. Estas llaman a la rutina de interrupción **USART3_IRQn**. Se desarrolla en el archivo de código fuente [interr.c](interr_8c.html).
+
+
+En las siguientes tablas se especifican las diferentes configuraciones necesarias para el correcto funcionamiento del buzzer con los temporizadores mencionados anteriormente:
+
+| Parámetro | Valor | 
+| --------- | --------- | 
+| Pin  | A6   | 
+| Mode   | Alternative   | 
+| Pull up/down   | No pull  | 
+| Timer   | TIM3   | 
+| Channel  | --------  | 
+| PWM mode  | 1  |
+| Prescaler  | depends on the frequency of the note playing | 
+| Period   | depends on the frequency of the note playing |
+| Duty cice  | 50% | 
+
+| Parámetro | Valor | 
+| --------- | --------- | 
+| Timer   | TIM2   |
+| Prescaler  | depends on the frequency of the note playing | 
+| Period  | depends on the frequency of the note playing |
+
+| Parámetro | Valor | 
+| --------- | --------- | 
+| Interrupt  | TIM2_IRQHandler| 
+| Priority  | 3 |
+| Subpriority  | 0 | 
+
+Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para la reproducción de melodías mediante un buzzer. Se puede observar el código en los siguientes ficheros:
+
+Archivo de cabeceras: [fsm_buzzer.h](fsm__buzzer_8h.html) 
+
+Archivo de código fuente: [fsm_buzzer.c](fsm__buzzer_8c.html)
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más buzzers si se desea para versiones posteriores.
+
+Archivo de cabeceras: [port_buzzer.h](port__buzzer_8h.html) 
+
+Archivo de código fuente: [port_buzzer.c](port__buzzer_8c.html)
 
 
