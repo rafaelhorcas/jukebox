@@ -84,7 +84,9 @@ Archivo de código fuente: [port_usart.c](port__usart_8c.html)
 ## Version 3
 En la tercera versión se reproducirán las melodías almacenadas en el archivo [melodies.c](melodies_8c.html), mediante el uso de un zumbador.
 
-El zumbador está conectado al **pin 6** de la **GPIO A** y utiliza los temporizadores **TIM2** para controlar la duración de la nota y **TIM3** para establecer la frecuencia de la misma. 
+El zumbador está conectado al **pin 6** de la **GPIO A**. Para esta versión será necesario el uso de PWM. Para ello se van a usar las dos siguientes fuentes de interrupciones. El timer **TIM2** se encargará de establecer la duración de la nota reproduciéndose. El timer **TIM3** segundo se encargará de establecer la frecuencia de la nota a reproducir
+
+Para la comunicación se emplearan las propias interrupciones de la USART, RXNE y TXE. Estas llaman a la rutina de interrupción **USART3_IRQn**. Se desarrolla en el archivo de código fuente [interr.c](interr_8c.html).
 
 Se realiza el siguiente montaje con ayuda de una protoboard para conectar el zumbador a la placa STM32F446RE. 
 
@@ -96,23 +98,23 @@ En la siguiente tabla se especifican las diferentes configuraciones necesarias p
 | --------- | --------- | 
 | PIN   | PA6   | 
 | Mode| Alternative |
-| Pull up/down   | Sin Pull | 
+| Pull up/down   | No Pull | 
 | Temporizador   | TIM3 |
 | Modo PWM   | PWM 1 |
-| Prescaler  | En funcion de la nota reproducida |
-| Periodo  | En funcion de la nota reproducida |
-| Ciclo de trabajo | 50 % |
+| Prescaler  | Depends on the frequency of the note playing |
+| Period  | Depends on the frequency of the note playing |
+| Duty cycle | 50 % |
 
 En la siguiente tabla se muestran las especificaciones necesarias para configurar la duración de cada nota.
 
 | Parámetro | Valor | 
 | --------- | --------- | 
-| Temporizador   | TIM2 |
-| Prescaler  | En funcion de la nota reproducida |
-| Periodo  | En funcion de la nota reproducida |
+| Timer   | TIM2 |
+| Prescaler  | Depends on the frequency of the note playing |
+| Period  | Depends on the frequency of the note playing |
 | ISR   | TIM2_IRQHANDLER() |
-| Prioridad   | 3 |
-| Subprioridad   | 0 |
+| Prioririty  | 3 |
+| Subprioririty  | 0 |
 
 La reproducción de cada nota musical se realiza con la repetición de de una señal digital **PWM** que toma los valores 0 y 1 periódicamente. Modificando la frecuencia de dicha señal mediante los registros **ARR** y **PSC** del temporizador, nuestro oido interpretará las distintas notas.
 Se utilizará un ciclo de trabajo del 50%, para que el volumen de la nota musical sea el máximo.
@@ -123,7 +125,7 @@ Archivo de cabeceras: [fsm_buzzer.h](fsm__buzzer_8h.html)
 
 Archivo de código fuente: [fsm_buzzer.c](fsm__buzzer_8c.html)
 
-A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más BUZZERs si se desea para versiones posteriores.
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más BUZZERS si se desea para versiones posteriores.
 
 Archivo de cabeceras: [port_buzzer.h](port__buzzer_8h.html) 
 
