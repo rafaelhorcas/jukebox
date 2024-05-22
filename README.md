@@ -21,13 +21,13 @@ En la siguiente tabla se especifican las diferentes configuraciones necesarias p
 | Parámetro | Valor | 
 | --------- | --------- | 
 | Pin   | PC13   | 
-| Modo   | Input   | 
+| Mode   | Input   | 
 | Pull up/down   | No push no pull   | 
 | EXTI   | EXTI13   | 
 | ISR   | EXTI15_10_IRQHandler  | 
-| Prioridad  | 1  |
-| Subprioridad   | 0 | 
-| Tiempo antirebotes| 150ms  | 
+| Priority  | 1  |
+| Subpriority   | 0 | 
+| Debounce time     | 150ms  | 
 
 Para la implementación, en primer lugar, se ha desarrollado una librería basada en una máquina de estados finitos para el botón. Se puede observar el código en los siguientes ficheros:
 
