@@ -86,7 +86,7 @@ En la tercera versión se reproducirán las melodías almacenadas en el archivo 
 
 El zumbador está conectado al **pin 6** de la **GPIO A**. Para esta versión será necesario el uso de PWM. Para ello se van a usar las dos siguientes fuentes de interrupciones. El timer **TIM2** se encargará de establecer la duración de la nota reproduciéndose. El timer **TIM3** segundo se encargará de establecer la frecuencia de la nota a reproducir
 
-Para la comunicación se emplearan las propias interrupciones de la USART, RXNE y TXE. Estas llaman a la rutina de interrupción **USART3_IRQn**. Se desarrolla en el archivo de código fuente [interr.c](interr_8c.html).
+Para la reproducción de las melodias se va a usar la interrupción del temporizador **TIM2** relativa al **PWM**. Esta llama a la rutina de interrupción **TIM2_IRQHandler**. Se desarrolla en el archivo de código fuente [interr.c](interr_8c.html).
 
 Se realiza el siguiente montaje con ayuda de una protoboard para conectar el zumbador a la placa STM32F446RE. 
 
