@@ -95,4 +95,84 @@ A continuación, se ha desarrollado el código necesario en la parte portable pa
 
 Archivo de cabeceras\+: \href{port__usart_8h.html}{\texttt{ port\+\_\+usart.\+h}}
 
-Archivo de código fuente\+: \href{port__usart_8c.html}{\texttt{ port\+\_\+usart.\+c}} 
+Archivo de código fuente\+: \href{port__usart_8c.html}{\texttt{ port\+\_\+usart.\+c}}\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysection{\texorpdfstring{Version 3}{Version 3}}\label{md__r_e_a_d_m_e_autotoc_md4}
+En la tercera versión se reproducirán las melodías almacenadas en el archivo \href{melodies_8c.html}{\texttt{ melodies.\+c}}, mediante el uso de un zumbador.
+
+El zumbador está conectado al {\bfseries{pin 6}} de la {\bfseries{GPIO A}} y utiliza los temporizadores {\bfseries{TIM2}} para controlar la duración de la nota y {\bfseries{TIM3}} para establecer la frecuencia de la misma.
+
+Se realiza el siguiente montaje con ayuda de una protoboard para conectar el zumbador a la placa STM32\+F446\+RE. 
+
+En la siguiente tabla se especifican las diferentes configuraciones necesarias para el correcto funcionamiento del {\bfseries{buzzer}} y su {\bfseries{temporizador}} para la frecuencia de las notas.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parámetro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Valor    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parámetro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Valor    }\\\cline{1-2}
+\endhead
+PIN   &PA6    \\\cline{1-2}
+Mode   &Alternative    \\\cline{1-2}
+Pull up/down   &Sin Pull    \\\cline{1-2}
+Temporizador   &TIM3    \\\cline{1-2}
+Modo PWM   &PWM 1    \\\cline{1-2}
+Prescaler   &En funcion de la nota reproducida    \\\cline{1-2}
+Periodo   &En funcion de la nota reproducida    \\\cline{1-2}
+Ciclo de trabajo   &50 \%   \\\cline{1-2}
+\end{longtabu}
+
+
+En la siguiente tabla se muestran las especificaciones necesarias para configurar la duración de cada nota.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parámetro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Valor    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parámetro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Valor    }\\\cline{1-2}
+\endhead
+Temporizador   &TIM2    \\\cline{1-2}
+Prescaler   &En funcion de la nota reproducida    \\\cline{1-2}
+Periodo   &En funcion de la nota reproducida    \\\cline{1-2}
+ISR   &TIM2\+\_\+\+IRQHANDLER()    \\\cline{1-2}
+Prioridad   &3    \\\cline{1-2}
+Subprioridad   &0   \\\cline{1-2}
+\end{longtabu}
+
+
+La reproducción de cada nota musical se realiza con la repetición de de una señal digital {\bfseries{PWM}} que toma los valores 0 y 1 periódicamente. Controlando la frecuencia de dicha señal mediante los registros {\bfseries{ARR}} y {\bfseries{PSC}} del temporizador nuestro oido interpretará las distintas notas. Se utilizará un ciclo de trabajo del 50\%, para que el volumen de la nota musical sea el máximo.
+
+Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para el buzzer. Se puede observar el código en los siguientes ficheros\+:
+
+Archivo de cabeceras\+: \href{fsm__buzzer_8h.html}{\texttt{ fsm\+\_\+buzzer.\+h}}
+
+Archivo de código fuente\+: \href{fsm__buzzer_8c.html}{\texttt{ fsm\+\_\+buzzer.\+c}}
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32\+F446\+RE. Además, es posible añadir más BUZZERs si se desea para versiones posteriores.
+
+Archivo de cabeceras\+: \href{port__buzzer_8h.html}{\texttt{ port\+\_\+buzzer.\+h}}
+
+Archivo de código fuente\+: \href{port__buzzer_8c.html}{\texttt{ port\+\_\+buzzer.\+c}}\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysection{\texorpdfstring{Version 4}{Version 4}}\label{md__r_e_a_d_m_e_autotoc_md5}
+En la cuarta versión se integrarán todos los componentes para que el sistema sea completamente funcional. Además se añadirán dos {\bfseries{modos de bajo consumo}} para un uso más óptimo de los recursos. Los modos {\bfseries{SLEEP\+\_\+\+WHILE\+\_\+\+ON}} y {\bfseries{SLEEP\+\_\+\+WHILE\+\_\+\+OFF}} activarán el modo bajo consumo si todas las FSM de los elementos están inactivas. Dichos modos se desactivarán tras una interrupción de un timer o una interrupción externa.
+
+El montaje final se realiza con la ayuda de una protoboard que integra la USART junto con el zumbador a la placa STM32\+F446\+RE. 
+
+A continuación se muestra una captura realizada con un osciloscopio del envío de un mensaje por el puerto serie hacia el ordenador. El canal uno (señal de color rojo) se corresponde al envío del comando {\bfseries{info}}. El canal dos (señal de color amarillo) se corresponde a la señal respuesta, en este caso reproduce la melodía {\bfseries{scale}}. 
+
+Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para el sistema de maquinas de estados finitos JUKEBOX. Se puede observar el código en los siguientes ficheros\+:
+
+Archivo de cabeceras\+: \href{fsm__jukebox_8h.html}{\texttt{ fsm\+\_\+jukebox.\+h}}
+
+Archivo de código fuente\+: \href{fsm__jukebox_8c.html}{\texttt{ fsm\+\_\+jukebox.\+c}}
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32\+F446\+RE.
+
+Archivo de cabeceras\+: \href{port__jukebox_8h.html}{\texttt{ port\+\_\+jukebox.\+h}}
+
+Archivo de código fuente\+: \href{port__jukebox_8c.html}{\texttt{ port\+\_\+jukebox.\+c}} 

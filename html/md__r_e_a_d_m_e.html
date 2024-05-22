@@ -154,7 +154,68 @@ Version 2</h1>
 <p>Archivo de código fuente: <a href="fsm__usart_8c.html">fsm_usart.c</a></p>
 <p>A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más USARTs si se desea para versiones posteriores.</p>
 <p>Archivo de cabeceras: <a href="port__usart_8h.html">port_usart.h</a></p>
-<p>Archivo de código fuente: <a href="port__usart_8c.html">port_usart.c</a> </p>
+<p>Archivo de código fuente: <a href="port__usart_8c.html">port_usart.c</a></p>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Version 3</h1>
+<p>En la tercera versión se reproducirán las melodías almacenadas en el archivo <a href="melodies_8c.html">melodies.c</a>, mediante el uso de un zumbador.</p>
+<p>El zumbador está conectado al <b>pin 6</b> de la <b>GPIO A</b> y utiliza los temporizadores <b>TIM2</b> para controlar la duración de la nota y <b>TIM3</b> para establecer la frecuencia de la misma.</p>
+<p>Se realiza el siguiente montaje con ayuda de una protoboard para conectar el zumbador a la placa STM32F446RE. <img src="docs/assets/imgs/montaje_v3.jpeg" alt="Montaje Versión 3" class="inline"/></p>
+<p>En la siguiente tabla se especifican las diferentes configuraciones necesarias para el correcto funcionamiento del <b>buzzer</b> y su <b>temporizador</b> para la frecuencia de las notas.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Parámetro   </th><th class="markdownTableHeadNone">Valor    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PIN   </td><td class="markdownTableBodyNone">PA6    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Mode   </td><td class="markdownTableBodyNone">Alternative    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Pull up/down   </td><td class="markdownTableBodyNone">Sin Pull    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Temporizador   </td><td class="markdownTableBodyNone">TIM3    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Modo PWM   </td><td class="markdownTableBodyNone">PWM 1    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Prescaler   </td><td class="markdownTableBodyNone">En funcion de la nota reproducida    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Periodo   </td><td class="markdownTableBodyNone">En funcion de la nota reproducida    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Ciclo de trabajo   </td><td class="markdownTableBodyNone">50 %   </td></tr>
+</table>
+<p>En la siguiente tabla se muestran las especificaciones necesarias para configurar la duración de cada nota.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Parámetro   </th><th class="markdownTableHeadNone">Valor    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Temporizador   </td><td class="markdownTableBodyNone">TIM2    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Prescaler   </td><td class="markdownTableBodyNone">En funcion de la nota reproducida    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Periodo   </td><td class="markdownTableBodyNone">En funcion de la nota reproducida    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ISR   </td><td class="markdownTableBodyNone">TIM2_IRQHANDLER()    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Prioridad   </td><td class="markdownTableBodyNone">3    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Subprioridad   </td><td class="markdownTableBodyNone">0   </td></tr>
+</table>
+<p>La reproducción de cada nota musical se realiza con la repetición de de una señal digital <b>PWM</b> que toma los valores 0 y 1 periódicamente. Controlando la frecuencia de dicha señal mediante los registros <b>ARR</b> y <b>PSC</b> del temporizador nuestro oido interpretará las distintas notas. Se utilizará un ciclo de trabajo del 50%, para que el volumen de la nota musical sea el máximo.</p>
+<p>Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para el buzzer. Se puede observar el código en los siguientes ficheros:</p>
+<p>Archivo de cabeceras: <a href="fsm__buzzer_8h.html">fsm_buzzer.h</a></p>
+<p>Archivo de código fuente: <a href="fsm__buzzer_8c.html">fsm_buzzer.c</a></p>
+<p>A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más BUZZERs si se desea para versiones posteriores.</p>
+<p>Archivo de cabeceras: <a href="port__buzzer_8h.html">port_buzzer.h</a></p>
+<p>Archivo de código fuente: <a href="port__buzzer_8c.html">port_buzzer.c</a></p>
+<h1><a class="anchor" id="autotoc_md5"></a>
+Version 4</h1>
+<p>En la cuarta versión se integrarán todos los componentes para que el sistema sea completamente funcional. Además se añadirán dos <b>modos de bajo consumo</b> para un uso más óptimo de los recursos. Los modos <b>SLEEP_WHILE_ON</b> y <b>SLEEP_WHILE_OFF</b> activarán el modo bajo consumo si todas las FSM de los elementos están inactivas. Dichos modos se desactivarán tras una interrupción de un timer o una interrupción externa.</p>
+<p>El montaje final se realiza con la ayuda de una protoboard que integra la USART junto con el zumbador a la placa STM32F446RE. <img src="docs/assets/imgs/montaje_v4.jpeg" alt="Montaje Versión 4" class="inline"/></p>
+<p>A continuación se muestra una captura realizada con un osciloscopio del envío de un mensaje por el puerto serie hacia el ordenador. El canal uno (señal de color rojo) se corresponde al envío del comando <b>info</b>. El canal dos (señal de color amarillo) se corresponde a la señal respuesta, en este caso reproduce la melodía <b>scale</b>. <img src="docs/assets/imgs/v4_captura_osciloscopio.jpg" alt="Captura Osciloscopio" class="inline"/></p>
+<p>Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para el sistema de maquinas de estados finitos JUKEBOX. Se puede observar el código en los siguientes ficheros:</p>
+<p>Archivo de cabeceras: <a href="fsm__jukebox_8h.html">fsm_jukebox.h</a></p>
+<p>Archivo de código fuente: <a href="fsm__jukebox_8c.html">fsm_jukebox.c</a></p>
+<p>A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE.</p>
+<p>Archivo de cabeceras: <a href="port__jukebox_8h.html">port_jukebox.h</a></p>
+<p>Archivo de código fuente: <a href="port__jukebox_8c.html">port_jukebox.c</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
