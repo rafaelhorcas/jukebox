@@ -25,6 +25,10 @@
 #define LED_1_ID 0x01                    /*!<LED Identifier*/
 #define LED_1_GPIO GPIOC                 /*!<LED GPIO port*/
 #define LED_1_PIN 0x03                   /*!<LED GPIO pin*/
+#define ODR5_MASK_LED0 ( GPIO_ODR_OD0 << LED_0_PIN ) /*!< Mask for ODR register using LED_0_PIN */
+#define IDR5_MASK_LED0 ( GPIO_IDR_ID0 << LED_0_PIN ) /*!< Mask for IDR register using LED_0_PIN */
+#define ODR5_MASK_LED1 ( GPIO_ODR_OD0 << LED_1_PIN ) /*!< Mask for ODR register using LED_1_PIN */
+#define IDR5_MASK_LED1 ( GPIO_IDR_ID0 << LED_1_PIN ) /*!< Mask for IDR register using LED_1_PIN */
 
 /* Typedefs --------------------------------------------------------------------*/
 /**
@@ -35,7 +39,7 @@ typedef struct
 {
     GPIO_TypeDef *p_port;   /*!<GPIO where the LED is connected*/
     uint8_t pin;            /*!<Pin where the LED is connected*/
-    bool is_illuminated;      /*!<Flag to indicate the LED has been pressed*/
+    bool is_illuminated;    /*!<Flag to indicate the LED has been pressed*/
 } port_led_hw_t;         
 
 /* Global variables */
@@ -53,26 +57,19 @@ extern port_led_hw_t led_arr[];
 void port_led_init(uint32_t led_id);
 
 /**
- * @brief Checks if the LED is illuminating
+ * @brief Checks the status of the LED to determine whether its ON or OFF
  * 
  * @param led_id LED ID. This index is used to select the element of the LEDs_arr[] array.
  * @return true 
  * @return false 
  */
-bool port_led_is_illuminated(uint32_t led_id);
+bool port_led_get(uint32_t led_id);
 
 /**
- * @brief Turns the LED on
+ * @brief If the LED is on, it turns it off. It the LED is off, it turns it off
  * 
  * @param led_id LED ID. This index is used to select the element of the LEDs_arr[] array.
  */
-void port_led_on(uint32_t led_id);
-
-/**
- * @brief Turns the LED off
- * 
- * @param led_id LED ID. This index is used to select the element of the LEDs_arr[] array.
- */
-void port_led_off(uint32_t led_id);
+void port_led_toggle(uint32_t led_id);
 
 #endif

@@ -17,6 +17,7 @@
 #include "port_led.h"
 
 /* State machine input or transition functions */
+// CHECKEAR ESTAS DOS FUNCIONES CHECK QUE NO SABEMOS HACERLO
 /**
  * @brief Check if the led is set to iluminate
  * 
@@ -24,9 +25,9 @@
  * @return true 
  * @return false 
  */
-bool check_illuminated(fsm_t *p_this){
-    // TO-DO
-    return true;
+bool check_is_note_playing(fsm_t *p_this){
+    fsm_led_t *p_led = (fsm_led_t *)p_this;
+    return port_led_(p_led->led_id);
 }
 
 /**
@@ -36,8 +37,8 @@ bool check_illuminated(fsm_t *p_this){
  * @return true 
  * @return false 
  */
-bool check_not_illuminated(fsm_t *p_this){
-    return check_illuminated(p_this);
+bool check_is_note_stop(fsm_t *p_this){
+    return !check_is_note_playing(p_this);
 }
 
 /* State machine output or action functions */
@@ -48,7 +49,7 @@ bool check_not_illuminated(fsm_t *p_this){
  */
 void do_turn_on(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
-    port_led_on(p_led->led_id);
+    port_led_toggle(p_led->led_id);
 }
 
 /**
@@ -58,7 +59,7 @@ void do_turn_on(fsm_t *p_this){
  */
 void do_turn_off(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
-    port_led_off(p_led->led_id);
+    port_led_toggle(p_led->led_id);
 }
 
 /**
@@ -67,8 +68,8 @@ void do_turn_off(fsm_t *p_this){
  * @image html fsm_button_states.png
  */
 static fsm_trans_t fsm_trans_led[] = {
-    { OFF, check_not_illuminated, ON, do_turn_on },
-    { ON , check_illuminated, OFF, do_turn_off },
+    { OFF, check_is_note_playing, ON, do_turn_on },
+    { ON , check_is_note_stop, OFF, do_turn_off },
     { -1 , NULL , -1, NULL }
 };
 
@@ -85,4 +86,9 @@ void fsm_led_init(fsm_t *p_this, uint32_t led_id){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
     fsm_init(&p_led->f, fsm_trans_led);
     port_button_init(p_led->led_id);
+}
+
+bool fsm_led_check_activity(fsm_t *p_this){
+    fsm_led_t *p_led = (fsm_led_t *)p_this;
+    return(port_led_get(p_led->led_id));
 }
