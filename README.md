@@ -174,28 +174,33 @@ Se muestra la nueva máquina de estados a continuación:
 
 ### Discoteca
 
-Con esta mejora se añaden dos LEDs al montaje, conectado a sendos pines.
-La funcionalidad que realizan es, cada vez que suena una nota, se enciende alternativamente uno y otro. Para el montaje es necesario el uso de resistencia, en este caso de 250 Ohm
+En esta mejora se van a añadir dos LEDs al montaje, emulando una "discoteca". La funcionalidad que realizan es, cada vez que suena una nota, se encienden alternativamente uno y otro. Para el montaje es necesario el uso de resistencia, en este caso de 250 Ohm.
 
-En esta version se integran los distintos **comandos** para interactuar con la Jukebox.
+Los **LEDs** se conectan al **pin 2** y **pin 3** de la **GPIO C**.
 
-| Comando | Parámetro | Funcionalidad | 
-| --------- | --------- | --------- | 
-| play  |-| Reproduce la melodía seleccionada |
-| pause |-| Pausa la melodía seleccionada |
-| stop  |-| Para la melodía |
-| next  |-| Reproduce la próxima melodía|
-| info  |-| Muestra la información de la melodía que se está reproduciendo|
-| select|Número de la melodía| Selecciona la melodía en la posición correspondiente del array de melodías|
-| speed|Velocidad| Cambia la velocidad de la melodía|
+| Parámetro | Valor | 
+| --------- | --------- | 
+| Pin | PC2 y PC3 | 
+| Mode | Output | 
+| Pull up/down | No push no pull | 
+| EXTI |   | 
+| ISR |   | 
+| Priority | 1 |
+| Subpriority | 0 | 
 
 El montaje final se realiza con la ayuda de una protoboard que integra la USART junto con el zumbador a la placa STM32F446RE. 
 
 ![Montaje de la versión 5](docs/assets/imgs/montaje_v5.jpeg)
 
 
-Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para el sistema de maquinas de estados finitos JUKEBOX. Se puede observar el código en los siguientes ficheros:
+Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para los LED.ss Se puede observar el código en los siguientes ficheros:
 
-Archivo de cabeceras: [fsm_jukebox.h](fsm__jukebox_8h.html) 
+Archivo de cabeceras: [fsm_led.h](fsm__led_8h.html) 
 
-Archivo de código fuente: [fsm_jukebox.c](fsm__jukebox_8c.html)
+Archivo de código fuente: [fsm_led.c](fsm__led_8c.html)
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más BUZZERS si se desea para versiones posteriores.
+
+Archivo de cabeceras: [port_led.h](port__led_8h.html) 
+
+Archivo de código fuente: [port_led.c](port__led_8c.html)
