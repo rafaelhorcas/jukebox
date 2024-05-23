@@ -72,6 +72,10 @@ typedef struct
 // Scale melody
 extern const melody_t scale_melody; 
 
+// Inverse scale melody
+// Scale melody
+extern const melody_t inverse_scale_melody; 
+
 // Melody Happy Birthday
 extern const melody_t happy_birthday_melody;
 

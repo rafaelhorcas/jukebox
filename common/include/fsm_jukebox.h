@@ -29,6 +29,7 @@ enum FSM_JUKEBOX {
   OFF = 0,          /*!<Starting state. Also comes here when the button has been pressed for the required time to turn OFF the Jukebox*/
   START_UP,         /*!<State to play the intro melody and initialize the Jukebox*/
   WAIT_COMMAND,     /*!<State to wait for a command from the USART*/
+  SHUT_DOWN,        /*!<State to play de outro melody to turn off the jukebox*/
   SLEEP_WHILE_OFF,  /*!<State to start the low power mode while the Jukebox is OFF*/
   SLEEP_WHILE_ON    /*!<State to start the low power mode while the Jukebox is ON*/
 };

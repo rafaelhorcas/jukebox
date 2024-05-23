@@ -155,7 +155,6 @@ static bool check_activity(fsm_t *p_this){
     bool c = fsm_usart_check_activity(p_fsm_jukebox->p_fsm_usart);
     return (a || b || c);
 }
-//La melodía se para antes de tiempo, se está llamando a sleep prematuramente. primero comprobar la funcion de la tabla sleep al comentarlo funciona bien. En tal caso comprobar individualmente las check activity. Poner ifs separados en lugar del return con el tochaco. Luego poner return a or b or c en check activity de fsm jukebox.
 
 /**
  * @brief Check if the USART has received data
@@ -331,8 +330,23 @@ static void do_stop_jukebox(fsm_t *p_this){
     fsm_jukebox_t *p_fsm_jukebox = (fsm_jukebox_t  *)(p_this);
     fsm_button_reset_duration(p_fsm_jukebox->p_fsm_button);
     fsm_usart_disable_rx_interrupt(p_fsm_jukebox->p_fsm_usart);
-    printf("JUKEBOX OFF\n");
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);
+}
+
+/**
+ * @brief 
+ * 
+ * @param p_this 
+ */
+static void do_shutdown_jukebox(fsm_t *p_this){
+    fsm_jukebox_t *p_fsm_jukebox = (fsm_jukebox_t  *)(p_this);
+    fsm_button_reset_duration(p_fsm_jukebox->p_fsm_button);
+    fsm_usart_disable_rx_interrupt(p_fsm_jukebox->p_fsm_usart);
+    printf("JUKEBOX OFF\n");
+    fsm_buzzer_set_speed(p_fsm_jukebox->p_fsm_buzzer, 1.0);
+    fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &inverse_scale_melody);
+    fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
+    fsm_button_reset_duration(p_fsm_jukebox->p_fsm_button);
 }
 
 /**
@@ -346,7 +360,8 @@ fsm_trans_t fsm_trans_jukebox[] = {
     { WAIT_COMMAND, check_next_song_button, WAIT_COMMAND, do_load_next_song},
     { WAIT_COMMAND, check_command_received, WAIT_COMMAND, do_read_command},
     { WAIT_COMMAND, check_no_activity, SLEEP_WHILE_ON, do_sleep_wait_command},
-    { WAIT_COMMAND, check_off, OFF, do_stop_jukebox},
+    { WAIT_COMMAND, check_off, SHUT_DOWN, do_shutdown_jukebox},
+    { SHUT_DOWN, check_melody_finished, OFF, do_stop_jukebox},
     { SLEEP_WHILE_ON, check_no_activity, SLEEP_WHILE_ON, do_sleep_while_on},
     { SLEEP_WHILE_ON, check_activity, WAIT_COMMAND, NULL},
     { SLEEP_WHILE_OFF, check_no_activity, SLEEP_WHILE_OFF, do_sleep_while_off},
@@ -373,9 +388,8 @@ void fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_
     p_fsm_jukebox->next_song_press_time_ms = next_song_press_time_ms;
     p_fsm_jukebox->melody_idx = 0;
     memset(p_fsm_jukebox->melodies, 0, sizeof(p_fsm_jukebox->melodies));
-    p_fsm_jukebox->melodies[0] = scale_melody;
-    p_fsm_jukebox->melodies[1] = tetris_melody;
-    p_fsm_jukebox->melodies[2] = happy_birthday_melody;
-    p_fsm_jukebox->melodies[3] = avemaria_melody;
-    p_fsm_jukebox->melodies[4] = pp_hymn_melody;
+    p_fsm_jukebox->melodies[0] = tetris_melody;
+    p_fsm_jukebox->melodies[1] = happy_birthday_melody;
+    p_fsm_jukebox->melodies[2] = avemaria_melody;
+    p_fsm_jukebox->melodies[3] = pp_hymn_melody;
 }

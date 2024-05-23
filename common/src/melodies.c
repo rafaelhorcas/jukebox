@@ -108,6 +108,38 @@ const melody_t scale_melody = {.p_name = "scale",
                                .p_durations = (uint16_t *)scale_melody_durations,
                                .melody_length = SCALE_MELODY_LENGTH};
 
+#define INVERSE_SCALE_MELODY_LENGTH 8   /*!< Inverse scale melody length */
+
+/**
+ * @brief Inverse scale melody notes.
+ *
+ * This array contains the frequencies of the notes for the inverse scale song.
+ * The notes are defined as frequency values in Hertz, and they are arranged in the order they are played in the song.
+ */
+static const double inverse_scale_melody_notes[INVERSE_SCALE_MELODY_LENGTH] = {
+    DO5, SI4, LA4, SOL4, FA4, MI4, RE4, DO4};
+
+/**
+ * @brief Inverse scale melody durations in milliseconds.
+ * 
+ * This array contains the duration of each note in the inverse scale song.
+ * The durations are defined in milliseconds, and they are arranged in the order they are played in the song.
+ */
+static const uint16_t inverse_scale_melody_durations[INVERSE_SCALE_MELODY_LENGTH] = {
+    250, 250, 250, 250, 250, 250, 250, 250};
+
+/**
+ * @brief Inverse scale melody struct.
+ * 
+ * This struct contains the information of the inverse scale melody.
+ * It is used to play the melody using the buzzer.
+ */
+const melody_t inverse_scale_melody = {.p_name = "inverse_scale",
+                                       .p_notes = (double *)inverse_scale_melody_notes,
+                                       .p_durations = (uint16_t *)inverse_scale_melody_durations,
+                                       .melody_length = INVERSE_SCALE_MELODY_LENGTH};
+
+
 
 // Ave Maria by David Bisbal melody
 #define AVEMARIA_LENGTH 44 /*!< Ave Maria by David Bisbal melody length */
