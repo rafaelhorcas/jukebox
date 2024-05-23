@@ -21,6 +21,8 @@
 #include "port_buzzer.h"
 #include "melodies.h"
 #include "fsm_jukebox.h"
+#include "fsm_led.h"
+#include "port_led.h"
 
 /* Defines ------------------------------------------------------------------*/
 #define ON_OFF_PRESS_TIME_MS 1000
@@ -38,6 +40,8 @@ int main(void)
     fsm_t *p_fsm_buzzer = fsm_buzzer_new(BUZZER_0_ID);
     fsm_t *p_fsm_usart = fsm_usart_new(USART_0_ID);
     fsm_t *p_fsm_jukebox = fsm_jukebox_new(p_fsm_button, ON_OFF_PRESS_TIME_MS, p_fsm_usart, p_fsm_buzzer, NEXT_SONG_BUTTON_TIME_MS);
+    fsm_t *p_fsm_led0 = fsm_led_new(LED_0_ID);
+    fsm_t *p_fsm_led1 = fsm_led_new(LED_1_ID);
 
     /* Infinite loop */
     while (1)
@@ -46,12 +50,16 @@ int main(void)
         fsm_fire(p_fsm_usart);
         fsm_fire(p_fsm_buzzer);
         fsm_fire(p_fsm_jukebox);
+        fsm_fire(LED_0_ID);
+        fsm_fire(LED_1_ID);
 
     } // End of while(1)
     fsm_destroy(p_fsm_button);
     fsm_destroy(p_fsm_usart);
     fsm_destroy(p_fsm_buzzer);
     fsm_destroy(p_fsm_jukebox);
+    fsm_destroy(p_fsm_led0);
+    fsm_destroy(p_fsm_led1);
     
     return 0;
 }
