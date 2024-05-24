@@ -23,8 +23,8 @@
  * 
  */
 enum FSM_LED{
-    OFF = 0,  /*!<Starting state. The LED is off*/
-    ON, /*!<The LED is on*/
+    LED_OFF = 0,  /*!<Starting state. The LED is off*/
+    LED_ON,       /*!<The LED is on*/
 };
 
 /* Typedefs ------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ enum FSM_LED{
 typedef struct{
     fsm_t f;            /*!< Internal FSM from the library */
     uint32_t led_id;    /*!< LED ID*/
-    bool is_even;       /*!< Flag that indicates if the index of the note playing is even*/
+    bool is_illuminated;    /*!<Flag to indicate the LED has been pressed*/
 } fsm_led_t;
 
 /* Function prototypes and documentation ---------------------------------------*/
@@ -62,6 +62,20 @@ void fsm_led_init(fsm_t *p_this, uint32_t led_id);
  * @return false
  */  
 bool fsm_led_check_activity(fsm_t *p_this);
+
+/**
+ * @brief Function that turns the LED off if it is on and viceversa.
+ * 
+ * @param p_this 
+ */
+void fsm_led_turn_on(uint32_t led_id);
+
+/**
+ * @brief Function that turns the LED off if it is on and viceversa.
+ * 
+ * @param p_this 
+ */
+void fsm_led_turn_off(uint32_t led_id);
 
 #endif 
 

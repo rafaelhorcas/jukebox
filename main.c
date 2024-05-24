@@ -39,9 +39,9 @@ int main(void)
     fsm_t *p_fsm_button = fsm_button_new(BUTTON_0_DEBOUNCE_TIME_MS, BUTTON_0_ID);
     fsm_t *p_fsm_buzzer = fsm_buzzer_new(BUZZER_0_ID);
     fsm_t *p_fsm_usart = fsm_usart_new(USART_0_ID);
-    fsm_t *p_fsm_jukebox = fsm_jukebox_new(p_fsm_button, ON_OFF_PRESS_TIME_MS, p_fsm_usart, p_fsm_buzzer, NEXT_SONG_BUTTON_TIME_MS);
     fsm_t *p_fsm_led0 = fsm_led_new(LED_0_ID);
     fsm_t *p_fsm_led1 = fsm_led_new(LED_1_ID);
+    fsm_t *p_fsm_jukebox = fsm_jukebox_new(p_fsm_button, ON_OFF_PRESS_TIME_MS, p_fsm_usart, p_fsm_buzzer, NEXT_SONG_BUTTON_TIME_MS, p_fsm_led0, p_fsm_led1);
 
     /* Infinite loop */
     while (1)
@@ -50,8 +50,8 @@ int main(void)
         fsm_fire(p_fsm_usart);
         fsm_fire(p_fsm_buzzer);
         fsm_fire(p_fsm_jukebox);
-        fsm_fire(LED_0_ID);
-        fsm_fire(LED_1_ID);
+        fsm_fire(p_fsm_led0);
+        fsm_fire(p_fsm_led1);
 
     } // End of while(1)
     fsm_destroy(p_fsm_button);

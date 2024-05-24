@@ -11,34 +11,33 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
-/* Other includes */
 
+/* Other includes */
 #include "fsm_led.h"
 #include "port_led.h"
 
 /* State machine input or transition functions */
-// CHECKEAR ESTAS DOS FUNCIONES CHECK QUE NO SABEMOS HACERLO
 /**
- * @brief Check if the led is set to iluminate
+ * @brief Check if a new song is starting
  * 
  * @param p_this fsm_t Pointer to the LED FSM.
  * @return true 
  * @return false 
  */
-bool check_is_note_even(fsm_t *p_this){
+bool check_melody_start(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
-    return p_led->is_even;
+    return port_check_melody_start(p_led->led_id);
 }
-
 /**
- * @brief Check if the led is not set to iluminate
+ * @brief Check if a new song is starting
  * 
  * @param p_this fsm_t Pointer to the LED FSM.
  * @return true 
  * @return false 
  */
-bool check_is_note_odd(fsm_t *p_this){
-    return !check_is_note_even(p_this);
+bool check_melody_end(fsm_t *p_this){
+    fsm_led_t *p_led = (fsm_led_t *)p_this;
+    return port_check_melody_end(p_led->led_id);
 }
 
 /* State machine output or action functions */
@@ -49,7 +48,7 @@ bool check_is_note_odd(fsm_t *p_this){
  */
 void do_turn_on(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
-    port_led_toggle(p_led->led_id);
+    p_led->is_illuminated = port_led_toggle(p_led->led_id);
 }
 
 /**
@@ -59,7 +58,7 @@ void do_turn_on(fsm_t *p_this){
  */
 void do_turn_off(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
-    port_led_toggle(p_led->led_id);
+    p_led->is_illuminated = port_led_toggle(p_led->led_id);
 }
 
 /**
@@ -68,8 +67,8 @@ void do_turn_off(fsm_t *p_this){
  * @image html fsm_button_states.png
  */
 static fsm_trans_t fsm_trans_led[] = {
-    { OFF, check_is_note_even, ON, do_turn_on },
-    { ON , check_is_note_odd, OFF, do_turn_off },
+    { LED_OFF, check_melody_start, LED_ON, do_turn_on },
+    { LED_ON , check_melody_end, LED_OFF, do_turn_off },
     { -1 , NULL , -1, NULL }
 };
 
@@ -85,10 +84,19 @@ fsm_t * fsm_led_new( uint32_t led_id){
 void fsm_led_init(fsm_t *p_this, uint32_t led_id){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
     fsm_init(&p_led->f, fsm_trans_led);
-    port_button_init(p_led->led_id);
+    p_led->led_id = led_id;
+    port_led_init(led_id);
 }
 
 bool fsm_led_check_activity(fsm_t *p_this){
-    fsm_led_t *p_led = (fsm_led_t *)p_this;
-    return(port_led_get(p_led->led_id));
+    fsm_led_t *p_led = (fsm_led_t *)p_this; 
+    return(p_led->f.current_state != LED_OFF);
+}
+
+void fsm_led_turn_on(uint32_t led_id){
+    port_led_toggle(led_id);
+}
+
+void fsm_led_turn_off(uint32_t led_id){
+    port_led_toggle(led_id);
 }

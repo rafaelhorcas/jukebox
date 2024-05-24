@@ -21,6 +21,7 @@
 #include "port_system.h"
 #include "port_usart.h"
 #include "port_led.h"
+#include "fsm_led.h"
 
 /* Defines ------------------------------------------------------------------*/
 #define MAX(a, b) ((a) > (b) ? (a) : (b)) /*!< Macro to get the maximum of two values. */
@@ -88,6 +89,15 @@ void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     printf("Playing %s\n", p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name);
     fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
+    if (p_fsm_jukebox->melody_idx % 2 == 0) {
+        // Si el índice de la melodía es par, encender LED_0_ID y apagar LED_1_ID
+        fsm_led_turn_on(LED_0_ID);
+        fsm_led_turn_off(LED_1_ID);
+    } else {
+        // Si el índice de la melodía es impar, encender LED_1_ID y apagar LED_0_ID
+        fsm_led_turn_on(LED_1_ID);
+        fsm_led_turn_off(LED_0_ID);
+    }
     p_fsm_jukebox->melody_idx++;
 }
 

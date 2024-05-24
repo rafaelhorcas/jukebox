@@ -39,7 +39,8 @@ typedef struct
 {
     GPIO_TypeDef *p_port;   /*!<GPIO where the LED is connected*/
     uint8_t pin;            /*!<Pin where the LED is connected*/
-    bool is_illuminated;    /*!<Flag to indicate the LED has been pressed*/
+    bool melody_start;  /*!< Flag that represents that a melody is playing*/
+    bool melody_end;    /*!< Flag that represents that a melody has finished*/
 } port_led_hw_t;         
 
 /* Global variables */
@@ -70,6 +71,24 @@ bool port_led_get(uint32_t led_id);
  * 
  * @param led_id LED ID. This index is used to select the element of the LEDs_arr[] array.
  */
-void port_led_toggle(uint32_t led_id);
+bool port_led_toggle(uint32_t led_id);
+
+/**
+ * @brief Checks that a melody is playing
+ * 
+ * @param led_id LED ID. This index is used to select the element of the LEDs_arr[] array.
+ * @return true 
+ * @return false 
+ */
+bool port_check_melody_start(uint32_t led_id);
+
+/**
+ * @brief Checks that no melody is playing
+ * 
+ * @param led_id LED ID. This index is used to select the element of the LEDs_arr[] array.
+ * @return true 
+ * @return false 
+ */
+bool port_check_melody_end(uint32_t led_id);
 
 #endif
