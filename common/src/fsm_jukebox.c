@@ -350,6 +350,8 @@ static void do_shutdown_jukebox(fsm_t *p_this){
 
 /**
  * @brief Array representing the transitions table of the FSM Jukebox
+ * > This FSM diagram is not the same as implemented in Version 4 of the project. This is the Version 5 Jukebox FSM which includes a new state SHUT DOWN. For more information look at section Version 5 in the main page of the API \n
+ * @image html fsm_jukebox_states.png
  * 
  */
 fsm_trans_t fsm_trans_jukebox[] = {
