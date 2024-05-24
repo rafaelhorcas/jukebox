@@ -170,9 +170,14 @@ La quinta versión del proyecto corresponde a diferentes mejoras opcionales a re
 ### Melodía  de apagado
 Para llevar a cabo esta mejora, en primer lugar, es necesario cambiar la máquina de estados. De forma análoga al encendido de la Jukebox realizado en la V4, se añade un nuevo estado **SHUT DOWN**. Para acceder a él se usa la función do_shutdown_jukebox, en la cual se desactiva la comunicación serie con el ordenador y se introduce una melodía de apagado. En este caso, la melodía será la escala al revés, dando un sentido de completitud.
 
-Se muestra la nueva máquina de estados a continuación:
+Se muestra el diagrama de la nueva máquina de estados a continuación:
 
-![Máquina Estados Jukebox](docs/assets/imgs/v4_maquina_estados.jpg)
+![Máquina Estados Jukebox](docs/assets/imgs/fsm_jukebox_states.png)
+
+### Nuevas Melodías
+En esta mejora se han añadido melodías nuevas al archivo [melodies.c](melodies_8c.html).
+
+Las melodías son la canción Ave María de David Bisbal y el himno del PP (en tono humorístico😉, sin que constituya una opinión política).
 
 ### Discoteca
 
@@ -185,8 +190,6 @@ Los **LEDs** se conectan al **pin 2** y **pin 3** de la **GPIO C**.
 | Pin | PC2 y PC3 | 
 | Mode | Output | 
 | Pull up/down | No push no pull | 
-| EXTI |   | 
-| ISR |   | 
 | Priority | 1 |
 | Subpriority | 0 | 
 

@@ -78,8 +78,6 @@ bool _parse_message(char *p_message, char *p_command, char *p_param){
  */
 void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);
-    p_fsm_jukebox->melody_idx++;
-    //Probar con módulo si hay errores
     if(p_fsm_jukebox->melody_idx >= MELODIES_MEMORY_SIZE){
         p_fsm_jukebox->melody_idx = 0;
     }
@@ -90,6 +88,7 @@ void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     printf("Playing %s\n", p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name);
     fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
+    p_fsm_jukebox->melody_idx++;
 }
 
 /**
@@ -119,8 +118,8 @@ void _execute_command(fsm_jukebox_t *p_fsm_jukebox, char *p_command, char *p_par
     else if(!strcmp(p_command, "select")){
         uint32_t melody_selected = atoi(p_param);
         if(p_fsm_jukebox->melodies[melody_selected].melody_length != 0){
-            fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);            
-            p_fsm_jukebox->melody_idx++;
+            p_fsm_jukebox->melody_idx = melody_selected;
+            fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);
             fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
             p_fsm_jukebox->p_melody= p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name;
             fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
@@ -352,6 +351,8 @@ static void do_shutdown_jukebox(fsm_t *p_this){
 
 /**
  * @brief Array representing the transitions table of the FSM Jukebox
+ * > This FSM diagram is not the same as implemented in Version 4 of the project. This is the Version 5 Jukebox FSM which includes a new state SHUT DOWN. For more information look at section Version 5 in the main page of the API \n
+ * @image html fsm_jukebox_states.png
  * 
  */
 fsm_trans_t fsm_trans_jukebox[] = {
