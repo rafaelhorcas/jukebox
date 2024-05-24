@@ -68,6 +68,12 @@ void USART3_IRQHandler(void){
     }
 }
 
+/**
+ * @brief This function handles TIM2 global interrupt.
+ * This timer is used to control the duration of the note. When the timer expiresit generates an interrupt. The code jumps to this ISR
+ * when the timer generates an interrupt.
+ * 
+ */
 void TIM2_IRQHandler(void){
     TIM2->SR &= ~ TIM_SR_UIF;
     buzzers_arr[BUZZER_0_ID].note_end = true;

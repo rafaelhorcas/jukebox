@@ -40,7 +40,7 @@ enum FSM_BUZZER {
  * 
  */
 enum USER_ACTIONS {
-    STOP, /*!Player is stopped or requested to stop*/
+    STOP, /*!<Player is stopped or requested to stop*/
     PLAY, /*!<Player is playing or requested to play*/
     PAUSE /*!<Player is requested to pause*/
 };

@@ -99,7 +99,7 @@ En la siguiente tabla se especifican las diferentes configuraciones necesarias p
 | PIN   | PA6   | 
 | Mode| Alternative |
 | Pull up/down   | No Pull | 
-| Temporizador   | TIM3 |
+| Timer   | TIM3 |
 | Modo PWM   | PWM 1 |
 | Prescaler  | Depends on the frequency of the note playing |
 | Period  | Depends on the frequency of the note playing |
@@ -130,6 +130,8 @@ A continuación, se ha desarrollado el código necesario en la parte portable pa
 Archivo de cabeceras: [port_buzzer.h](port__buzzer_8h.html) 
 
 Archivo de código fuente: [port_buzzer.c](port__buzzer_8c.html)
+
+Además se han añadido melodías nuevas al archivo [melodies.c](melodies_8c.html)
 
 ## Version 4
 En la cuarta versión se integrarán todos los componentes para que el sistema sea completamente funcional. 

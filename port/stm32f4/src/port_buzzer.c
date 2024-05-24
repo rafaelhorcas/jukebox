@@ -13,8 +13,12 @@
 #include "port_buzzer.h"
 
 /* Global variables */
-#define ALT_FUNC2_TIM3 0x02
+#define ALT_FUNC2_TIM3 0x02  /*!<TIM3 alternate function 2*/
 
+/**
+ * @brief Array of elements that represents the HW charactersitics of the buzzers.
+ * 
+ */
 port_buzzer_hw_t buzzers_arr[]= {
     [BUZZER_0_ID] = {.p_port = BUZZER_0_GPIO, .pin = BUZZER_0_PIN, .alt_func = ALT_FUNC2_TIM3, .note_end = false},
 };

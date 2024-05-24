@@ -33,6 +33,10 @@ typedef struct
 } port_buzzer_hw_t;         
 
 /* Global variables */
+/**
+ * @brief Array of elements that represents the HW characteristics of the buzzers.
+ * 
+ */
 extern port_buzzer_hw_t buzzers_arr[];
 
 /* Function prototypes and explanation -------------------------------------------------*/

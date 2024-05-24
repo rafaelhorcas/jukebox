@@ -125,7 +125,7 @@ static void do_end_melody(fsm_t * p_this){
 }
 
 /**
- * @brief Construct a new start note object
+ * @brief Start a note by setting the PWM frequency and the timer duration.
  * 
  * @param p_this Pointer to an fsm_t struct than contains an fsm_buzzer_t struct 
  * @param freq Frequency of the note to play.
@@ -207,7 +207,7 @@ static void do_player_stop(fsm_t * p_this){
 
 /**
  * @brief Array representing the transitions table of the fsm_buzzer.
- * @image 
+ * @image html fsm_buzzer_states.png
  */
 fsm_trans_t fsm_trans_buzzer[] = {
     { WAIT_START, check_player_start, WAIT_NOTE, do_player_start},
