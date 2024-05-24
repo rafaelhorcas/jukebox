@@ -170,7 +170,7 @@ Para llevar a cabo esta mejora, en primer lugar, es necesario cambiar la máquin
 
 Se muestra la nueva máquina de estados a continuación:
 
-![Máquina Estados Jukebox](docs/assets/imgs/v4_maquina_estados.jpg)
+![Máquina Estados Jukebox](docs/assets/imgs/fsm_jukebox_states.jpg)
 
 ### Nuevas Melodías
 En esta mejora se han añadido melodías nuevas al archivo [melodies.c](melodies_8c.html).
