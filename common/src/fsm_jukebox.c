@@ -71,7 +71,7 @@ bool _parse_message(char *p_message, char *p_command, char *p_param){
     }
     return true;
 }
-
+static bool led_state = false;
 /**
  * @brief Set the next song to be played.
  * 
@@ -89,8 +89,15 @@ void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     printf("Playing %s\n", p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name);
     fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
-    fsm_led_toggle(LED_0_ID);
-    fsm_led_toggle(LED_1_ID);
+    
+    led_state = !led_state;  
+    if (led_state) {
+        port_led_turn_on(LED_0_ID);  
+        port_led_turn_off(LED_1_ID);  
+    } else {
+        port_led_turn_off(LED_0_ID);  
+        port_led_turn_on(LED_1_ID);  
+    }
     p_fsm_jukebox->melody_idx++;
 }
 
@@ -126,9 +133,15 @@ void _execute_command(fsm_jukebox_t *p_fsm_jukebox, char *p_command, char *p_par
             fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
             p_fsm_jukebox->p_melody= p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name;
             fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
-            fsm_led_toggle(LED_0_ID);
-            fsm_led_toggle(LED_1_ID);
-        }
+            led_state = !led_state;  
+            if (led_state) {
+                port_led_turn_on(LED_0_ID);  
+                port_led_turn_off(LED_1_ID);  
+            } else {
+                port_led_turn_off(LED_0_ID);  
+                port_led_turn_on(LED_1_ID);  
+            }
+                }
         else{
             fsm_usart_set_out_data(p_fsm_jukebox->p_fsm_usart, "Error: Melody not found\n");
         }              
@@ -352,6 +365,8 @@ static void do_shutdown_jukebox(fsm_t *p_this){
     fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &inverse_scale_melody);
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
     fsm_button_reset_duration(p_fsm_jukebox->p_fsm_button);
+    fsm_led_turn_off(LED_0_ID);
+    fsm_led_turn_off(LED_1_ID);
 }
 
 /**

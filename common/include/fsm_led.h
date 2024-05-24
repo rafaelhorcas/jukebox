@@ -68,8 +68,14 @@ bool fsm_led_check_activity(fsm_t *p_this);
  * 
  * @param p_this 
  */
-void fsm_led_toggle(uint32_t led_id);
+void fsm_led_turn_on(uint32_t led_id);
 
+/**
+ * @brief Function that turns the LED off if it is on and viceversa.
+ * 
+ * @param p_this 
+ */
+void fsm_led_turn_off(uint32_t led_id);
 
 #endif 
 

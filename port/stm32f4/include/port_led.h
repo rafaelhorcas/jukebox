@@ -66,12 +66,6 @@ void port_led_init(uint32_t led_id);
  */
 bool port_led_get(uint32_t led_id);
 
-/**
- * @brief If the LED is on, it turns it off. It the LED is off, it turns it off
- * 
- * @param led_id LED ID. This index is used to select the element of the LEDs_arr[] array.
- */
-bool port_led_toggle(uint32_t led_id);
 
 /**
  * @brief Checks that a melody is playing
@@ -92,7 +86,7 @@ bool port_check_melody_start(uint32_t led_id);
 bool port_check_melody_end(uint32_t led_id);
 
 
-bool port_led_turn_on(uint32_t led_id);
+void port_led_turn_on(uint32_t led_id);
 
-bool port_led_turn_off(uint32_t led_id);
+void port_led_turn_off(uint32_t led_id);
 #endif

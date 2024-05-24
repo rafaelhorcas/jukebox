@@ -48,7 +48,8 @@ bool check_melody_end(fsm_t *p_this){
  */
 void do_turn_on(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
-    p_led->is_illuminated = port_led_toggle(p_led->led_id);
+    port_led_turn_on(p_led->led_id);
+    p_led->is_illuminated=true;
 }
 
 /**
@@ -58,7 +59,8 @@ void do_turn_on(fsm_t *p_this){
  */
 void do_turn_off(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
-    p_led->is_illuminated = port_led_toggle(p_led->led_id);
+    port_led_turn_off(p_led->led_id);
+    p_led->is_illuminated=false;
 }
 
 /**
@@ -93,6 +95,10 @@ bool fsm_led_check_activity(fsm_t *p_this){
     return(p_led->f.current_state != LED_OFF);
 }
 
-void fsm_led_toggle(uint32_t led_id){
-    port_led_toggle(led_id);
+void fsm_led_turn_on(uint32_t led_id){
+    port_led_turn_on(led_id);
+}
+
+void fsm_led_turn_off(uint32_t led_id){
+    port_led_turn_off(led_id);
 }
