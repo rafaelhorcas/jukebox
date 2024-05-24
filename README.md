@@ -168,9 +168,9 @@ La quinta versión del proyecto corresponde a diferentes mejoras opcionales a re
 ### Melodía  de apagado
 Para llevar a cabo esta mejora, en primer lugar, es necesario cambiar la máquina de estados. De forma análoga al encendido de la Jukebox realizado en la V4, se añade un nuevo estado **SHUT DOWN**. Para acceder a él se usa la función do_shutdown_jukebox, en la cual se desactiva la comunicación serie con el ordenador y se introduce una melodía de apagado. En este caso, la melodía será la escala al revés, dando un sentido de completitud.
 
-Se muestra la nueva máquina de estados a continuación:
+Se muestra el diagrama de la nueva máquina de estados a continuación:
 
-![Máquina Estados Jukebox](docs/assets/imgs/fsm_jukebox_states.jpg)
+![Máquina Estados Jukebox](docs/assets/imgs/fsm_jukebox_states.png)
 
 ### Nuevas Melodías
 En esta mejora se han añadido melodías nuevas al archivo [melodies.c](melodies_8c.html).
