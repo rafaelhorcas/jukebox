@@ -61,5 +61,3 @@ void port_led_toggle (uint32_t led_id){
         leds_arr[led_id].is_illuminated = true;
     }
 }
-
-//Faltan las funciones de cuando se llama a las check en fsm_led

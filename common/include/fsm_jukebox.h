@@ -18,7 +18,7 @@
 
 /* Defines and enums ----------------------------------------------------------*/
 /* Defines */
-#define MELODIES_MEMORY_SIZE 10
+#define MELODIES_MEMORY_SIZE 10  /*!<Size of the arrays of melodies*/
 
 /* Enums */
 /**
@@ -51,12 +51,14 @@ typedef struct
     fsm_t *p_fsm_buzzer;                        /*!<Pointer to the Buzzer FSM*/
     uint32_t next_song_press_time_ms;           /*!<Time in ms to consider next song*/
     double speed;                               /*!<Speed of the melody playing*/
+    fsm_t *p_fsm_led0;                          /*!<Pointer to the LED 0 FSM*/
+    fsm_t *p_fsm_led1;                          /*!<Pointer to the LED 1 FSM*/
 } fsm_jukebox_t ;
 
 /* Function prototypes and explanation ---------------------------------------*/
 
 /**
- * @brief 
+ * @brief Create a new Jukebox FSM.
  * 
  * @param p_fsm_button Pointer to the button FSM
  * @param on_off_press_time_ms 	Button press time in milliseconds to turn the system ON or OFF
@@ -65,10 +67,10 @@ typedef struct
  * @param next_song_press_time_ms Button press time in milliseconds to change to the next song.
  * @return fsm_t* A pointer to the button FSM
  */
-fsm_t * fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms);	
+fsm_t * fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms, fsm_t *p_fsm_led0, fsm_t *p_fsm_led1);	
 
 /**
- * @brief 
+ * @brief Initialize a Jukebox FSM
  * 
  * @param p_this Pointer to the Jukebox FSM
  * @param p_fsm_button Pointer to the button FSM
@@ -78,6 +80,6 @@ fsm_t * fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_
  * @param next_song_press_time_ms Button press time in milliseconds to change to the next song.
  * @return fsm_t* A pointer to the button FSM
  */
-void fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms);	
+void fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms, fsm_t *p_fsm_led0, fsm_t *p_fsm_led1);	
 
 #endif /* FSM_JUKEBOX_H_ */

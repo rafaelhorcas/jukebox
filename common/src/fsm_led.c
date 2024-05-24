@@ -25,9 +25,9 @@
  * @return true 
  * @return false 
  */
-bool check_is_note_playing(fsm_t *p_this){
+bool check_is_note_even(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
-    return port_led_(p_led->led_id);
+    return p_led->is_even;
 }
 
 /**
@@ -37,8 +37,8 @@ bool check_is_note_playing(fsm_t *p_this){
  * @return true 
  * @return false 
  */
-bool check_is_note_stop(fsm_t *p_this){
-    return !check_is_note_playing(p_this);
+bool check_is_note_odd(fsm_t *p_this){
+    return !check_is_note_even(p_this);
 }
 
 /* State machine output or action functions */
@@ -68,8 +68,8 @@ void do_turn_off(fsm_t *p_this){
  * @image html fsm_button_states.png
  */
 static fsm_trans_t fsm_trans_led[] = {
-    { OFF, check_is_note_playing, ON, do_turn_on },
-    { ON , check_is_note_stop, OFF, do_turn_off },
+    { OFF, check_is_note_even, ON, do_turn_on },
+    { ON , check_is_note_odd, OFF, do_turn_off },
     { -1 , NULL , -1, NULL }
 };
 

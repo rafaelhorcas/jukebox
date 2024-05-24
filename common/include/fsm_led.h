@@ -32,10 +32,10 @@ enum FSM_LED{
  * @brief LED FSM structure 
  * 
  */
-typedef struct
-{
+typedef struct{
     fsm_t f;            /*!< Internal FSM from the library */
     uint32_t led_id;    /*!< LED ID*/
+    bool is_even;       /*!< Flag that indicates if the index of the note playing is even*/
 } fsm_led_t;
 
 /* Function prototypes and documentation ---------------------------------------*/
