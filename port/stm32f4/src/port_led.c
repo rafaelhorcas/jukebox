@@ -21,8 +21,6 @@ void port_led_init(uint32_t led_id){
     GPIO_TypeDef *p_port = leds_arr[led_id].p_port;
     uint8_t pin = leds_arr[led_id].pin;
     port_system_gpio_config(p_port, pin, GPIO_MODE_OUT, GPIO_PUPDR_NOPULL);
-    port_system_gpio_config_exti(p_port, pin, TRIGGER_RISING_EDGE);
-    port_system_gpio_exti_enable(pin, 1, 0);
 }
 
 bool port_led_get(uint32_t led_id) {

@@ -181,7 +181,8 @@ Las melodías son la canción Ave María de David Bisbal y el himno del PP (en t
 
 ### Discoteca
 
-En esta mejora se van a añadir dos LEDs al montaje, emulando una "discoteca". La funcionalidad que realizan es, cada vez que suena una nota, se encienden alternativamente uno y otro. Para el montaje es necesario el uso de resistencia, en este caso de 250 Ohm.
+En esta mejora se van a añadir dos LEDs al montaje, emulando una "discoteca". La funcionalidad que realizan es, cada vez que suena una melodía, se encienden alternativamente uno y otro. Esto funciona tanto para cuando se pulsa el botón como para cuando se selecciona una melodía con el puerto serie de la USART.
+Para el montaje se han empleado dos LEDs, uno rojo y otro verde y 2 resistencias de 1 k&Omega;.
 
 Los **LEDs** se conectan al **pin 2** y **pin 3** de la **GPIO C**.
 
@@ -190,22 +191,25 @@ Los **LEDs** se conectan al **pin 2** y **pin 3** de la **GPIO C**.
 | Pin | PC2 y PC3 | 
 | Mode | Output | 
 | Pull up/down | No push no pull | 
-| Priority | 1 |
-| Subpriority | 0 | 
 
-El montaje final se realiza con la ayuda de una protoboard que integra la USART junto con el zumbador a la placa STM32F446RE. 
+El montaje final se realiza con la ayuda de una protoboard igual que se ha visto en versiones anteriores.
 
 ![Montaje de la versión 5](docs/assets/imgs/montaje_v5.jpeg)
 
-
-Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para los LED.ss Se puede observar el código en los siguientes ficheros:
+Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para los LED. Se puede observar el código en los siguientes ficheros:
 
 Archivo de cabeceras: [fsm_led.h](fsm__led_8h.html) 
 
 Archivo de código fuente: [fsm_led.c](fsm__led_8c.html)
 
-A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más BUZZERS si se desea para versiones posteriores.
+La máquina de estados de la FSM para los LED es la siguiente:
+
+![Máquina Estados LED](docs/assets/imgs/fsm_led_states.png)
+
+A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Ha sido necesario inicializar dos estructuras de LED que vienen desarrolladas en los siguientes ficheros.
 
 Archivo de cabeceras: [port_led.h](port__led_8h.html) 
 
 Archivo de código fuente: [port_led.c](port__led_8c.html)
+
+**A modo de resumen, se adjunta el siguiente vídeo corto explicando las diferentes mejoras añadidas:** [Enlace al vídeo](https://www.youtube.com/watch?v=_8yQjjEoJks)

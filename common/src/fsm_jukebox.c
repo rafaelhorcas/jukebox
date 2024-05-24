@@ -27,7 +27,7 @@
 #define MAX(a, b) ((a) > (b) ? (a) : (b)) /*!< Macro to get the maximum of two values. */
 
 /**
- * @brief variable to enable alternancy between LEDs.
+ * @brief Variable to enable alternancy between LEDs.
  * 
  */
 static bool led_state = false;

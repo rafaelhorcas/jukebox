@@ -66,14 +66,14 @@ bool fsm_led_check_activity(fsm_t *p_this);
 /**
  * @brief Function that turns the LED on.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_led_t.
  */
 void fsm_led_turn_on(uint32_t led_id);
 
 /**
  * @brief Function that turns the LED off.
  * 
- * @param p_this 
+ * @param p_this Pointer to an fsm_t struct than contains an fsm_led_t.
  */
 void fsm_led_turn_off(uint32_t led_id);
 
