@@ -91,4 +91,8 @@ bool port_check_melody_start(uint32_t led_id);
  */
 bool port_check_melody_end(uint32_t led_id);
 
+
+bool port_led_turn_on(uint32_t led_id);
+
+bool port_led_turn_off(uint32_t led_id);
 #endif

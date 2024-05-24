@@ -60,7 +60,6 @@ bool port_led_toggle (uint32_t led_id){
     return !prev_value;
 }
 
-
 bool port_check_melody_start(uint32_t led_id){
     return leds_arr[led_id].melody_start;
 }
