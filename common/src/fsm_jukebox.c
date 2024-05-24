@@ -77,8 +77,7 @@ bool _parse_message(char *p_message, char *p_command, char *p_param){
  */
 void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);
-    p_fsm_jukebox->melody_idx++;
-    //Probar con módulo si hay errores
+    
     if(p_fsm_jukebox->melody_idx >= MELODIES_MEMORY_SIZE){
         p_fsm_jukebox->melody_idx = 0;
     }
@@ -89,6 +88,7 @@ void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     printf("Playing %s\n", p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name);
     fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
+    p_fsm_jukebox->melody_idx++;
 }
 
 /**
