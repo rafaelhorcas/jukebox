@@ -51,8 +51,6 @@ typedef struct
     fsm_t *p_fsm_buzzer;                        /*!<Pointer to the Buzzer FSM*/
     uint32_t next_song_press_time_ms;           /*!<Time in ms to consider next song*/
     double speed;                               /*!<Speed of the melody playing*/
-    fsm_t *p_fsm_led0;                          /*!<Pointer to the LED 0 FSM*/
-    fsm_t *p_fsm_led1;                          /*!<Pointer to the LED 1 FSM*/
 } fsm_jukebox_t ;
 
 /* Function prototypes and explanation ---------------------------------------*/
@@ -67,7 +65,7 @@ typedef struct
  * @param next_song_press_time_ms Button press time in milliseconds to change to the next song.
  * @return fsm_t* A pointer to the button FSM
  */
-fsm_t * fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms, fsm_t *p_fsm_led0, fsm_t *p_fsm_led1);	
+fsm_t * fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms);	
 
 /**
  * @brief Initialize a Jukebox FSM
@@ -80,6 +78,6 @@ fsm_t * fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_
  * @param next_song_press_time_ms Button press time in milliseconds to change to the next song.
  * @return fsm_t* A pointer to the button FSM
  */
-void fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms, fsm_t *p_fsm_led0, fsm_t *p_fsm_led1);	
+void fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms);	
 
 #endif /* FSM_JUKEBOX_H_ */

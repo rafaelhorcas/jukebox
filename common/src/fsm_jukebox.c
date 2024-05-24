@@ -20,7 +20,6 @@
 #include "fsm_buzzer.h"
 #include "port_system.h"
 #include "port_usart.h"
-#include "port_led.h"
 
 /* Defines ------------------------------------------------------------------*/
 #define MAX(a, b) ((a) > (b) ? (a) : (b)) /*!< Macro to get the maximum of two values. */
@@ -371,20 +370,18 @@ fsm_trans_t fsm_trans_jukebox[] = {
 };
 
 /* Public functions */
-fsm_t *fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms, fsm_t *p_fsm_led0, fsm_t *p_fsm_led1){
+fsm_t *fsm_jukebox_new(fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms){
     fsm_t *p_fsm = malloc(sizeof(fsm_jukebox_t));
-    fsm_jukebox_init(p_fsm, p_fsm_button, on_off_press_time_ms, p_fsm_usart, p_fsm_buzzer, next_song_press_time_ms, p_fsm_led0, p_fsm_led1);
+    fsm_jukebox_init(p_fsm, p_fsm_button, on_off_press_time_ms, p_fsm_usart, p_fsm_buzzer, next_song_press_time_ms);
     return p_fsm;
 }
 
-void fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms, fsm_t *p_fsm_led0, fsm_t *p_fsm_led1){
+void fsm_jukebox_init(fsm_t *p_this, fsm_t *p_fsm_button, uint32_t on_off_press_time_ms, fsm_t *p_fsm_usart, fsm_t *p_fsm_buzzer, uint32_t next_song_press_time_ms){
     fsm_jukebox_t *p_fsm_jukebox = (fsm_jukebox_t *)(p_this);
     fsm_init(p_this, fsm_trans_jukebox);
     p_fsm_jukebox->p_fsm_button = p_fsm_button;
     p_fsm_jukebox->p_fsm_usart = p_fsm_usart;
     p_fsm_jukebox->p_fsm_buzzer = p_fsm_buzzer;
-    p_fsm_jukebox->p_fsm_led0 = p_fsm_led0;
-    p_fsm_jukebox->p_fsm_led1 = p_fsm_led1;
     p_fsm_jukebox->on_off_press_time_ms = on_off_press_time_ms;
     p_fsm_jukebox->next_song_press_time_ms = next_song_press_time_ms;
     p_fsm_jukebox->melody_idx = 0;
