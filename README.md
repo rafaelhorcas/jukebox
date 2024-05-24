@@ -131,8 +131,6 @@ Archivo de cabeceras: [port_buzzer.h](port__buzzer_8h.html)
 
 Archivo de código fuente: [port_buzzer.c](port__buzzer_8c.html)
 
-Además se han añadido melodías nuevas al archivo [melodies.c](melodies_8c.html)
-
 ## Version 4
 En la cuarta versión se integrarán todos los componentes para que el sistema sea completamente funcional. 
 Además se añadirán dos **modos de bajo consumo** para un uso más óptimo de los recursos.
@@ -174,35 +172,7 @@ Se muestra la nueva máquina de estados a continuación:
 
 ![Máquina Estados Jukebox](docs/assets/imgs/v4_maquina_estados.jpg)
 
-### Discoteca
+### Nuevas Melodías
+En esta mejora se han añadido melodías nuevas al archivo [melodies.c](melodies_8c.html).
 
-En esta mejora se van a añadir dos LEDs al montaje, emulando una "discoteca". La funcionalidad que realizan es, cada vez que suena una nota, se encienden alternativamente uno y otro. Para el montaje es necesario el uso de resistencia, en este caso de 250 Ohm.
-
-Los **LEDs** se conectan al **pin 2** y **pin 3** de la **GPIO C**.
-
-| Parámetro | Valor | 
-| --------- | --------- | 
-| Pin | PC2 y PC3 | 
-| Mode | Output | 
-| Pull up/down | No push no pull | 
-| EXTI |   | 
-| ISR |   | 
-| Priority | 1 |
-| Subpriority | 0 | 
-
-El montaje final se realiza con la ayuda de una protoboard que integra la USART junto con el zumbador a la placa STM32F446RE. 
-
-![Montaje de la versión 5](docs/assets/imgs/montaje_v5.jpeg)
-
-
-Para la implementación, se ha desarrollado una librería basada en una máquina de estados finitos para los LED.ss Se puede observar el código en los siguientes ficheros:
-
-Archivo de cabeceras: [fsm_led.h](fsm__led_8h.html) 
-
-Archivo de código fuente: [fsm_led.c](fsm__led_8c.html)
-
-A continuación, se ha desarrollado el código necesario en la parte portable para la placa STM32F446RE. Además, es posible añadir más BUZZERS si se desea para versiones posteriores.
-
-Archivo de cabeceras: [port_led.h](port__led_8h.html) 
-
-Archivo de código fuente: [port_led.c](port__led_8c.html)
+Las melodías son la canción Ave María de David Bisbal y el himno del PP (en tono humorístico😉, sin que constituya una opinión política).

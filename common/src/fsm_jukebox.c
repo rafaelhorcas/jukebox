@@ -77,7 +77,6 @@ bool _parse_message(char *p_message, char *p_command, char *p_param){
  */
 void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);
-    
     if(p_fsm_jukebox->melody_idx >= MELODIES_MEMORY_SIZE){
         p_fsm_jukebox->melody_idx = 0;
     }
@@ -118,8 +117,8 @@ void _execute_command(fsm_jukebox_t *p_fsm_jukebox, char *p_command, char *p_par
     else if(!strcmp(p_command, "select")){
         uint32_t melody_selected = atoi(p_param);
         if(p_fsm_jukebox->melodies[melody_selected].melody_length != 0){
+            p_fsm_jukebox->melody_idx = melody_selected;
             fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, STOP);            
-            p_fsm_jukebox->melody_idx++;
             fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
             p_fsm_jukebox->p_melody= p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name;
             fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
