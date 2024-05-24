@@ -35,7 +35,7 @@ enum FSM_LED{
 typedef struct{
     fsm_t f;            /*!< Internal FSM from the library */
     uint32_t led_id;    /*!< LED ID*/
-    bool is_illuminated;    /*!<Flag to indicate the LED has been pressed*/
+    bool is_illuminated;    /*!<Flag that indicates that the LED has been pressed*/
 } fsm_led_t;
 
 /* Function prototypes and documentation ---------------------------------------*/
@@ -56,7 +56,7 @@ fsm_t* fsm_led_new(uint32_t led_id);
 void fsm_led_init(fsm_t *p_this, uint32_t led_id);
 
 /** 
- * @brief Checks the status of the LED to determine whether its ON or OFF
+ * @brief Check if the LED is on
  * @param p_this Pointer to an fsm_t struct than contains an fsm_led_t.
  * @return true
  * @return false
@@ -64,14 +64,14 @@ void fsm_led_init(fsm_t *p_this, uint32_t led_id);
 bool fsm_led_check_activity(fsm_t *p_this);
 
 /**
- * @brief Function that turns the LED off if it is on and viceversa.
+ * @brief Function that turns the LED on.
  * 
  * @param p_this 
  */
 void fsm_led_turn_on(uint32_t led_id);
 
 /**
- * @brief Function that turns the LED off if it is on and viceversa.
+ * @brief Function that turns the LED off.
  * 
  * @param p_this 
  */

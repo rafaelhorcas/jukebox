@@ -18,7 +18,7 @@
 
 /* State machine input or transition functions */
 /**
- * @brief Check if a new song is starting
+ * @brief Check if a melody is playing
  * 
  * @param p_this fsm_t Pointer to the LED FSM.
  * @return true 
@@ -28,8 +28,9 @@ bool check_melody_start(fsm_t *p_this){
     fsm_led_t *p_led = (fsm_led_t *)p_this;
     return port_check_melody_start(p_led->led_id);
 }
+
 /**
- * @brief Check if a new song is starting
+ * @brief Check if the melody has finished
  * 
  * @param p_this fsm_t Pointer to the LED FSM.
  * @return true 
@@ -42,7 +43,7 @@ bool check_melody_end(fsm_t *p_this){
 
 /* State machine output or action functions */
 /**
- * @brief Turns the LED on
+ * @brief Turns the LED on.
  * 
  * @param p_this fsm_t Pointer to the LED FSM.
  */
@@ -66,7 +67,7 @@ void do_turn_off(fsm_t *p_this){
 /**
  * @brief Array representing the transitions table of the FSM button
  * 
- * @image html fsm_button_states.png
+ * @image html fsm_led_states.png
  */
 static fsm_trans_t fsm_trans_led[] = {
     { LED_OFF, check_melody_start, LED_ON, do_turn_on },

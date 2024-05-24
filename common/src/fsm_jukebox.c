@@ -26,6 +26,11 @@
 /* Defines ------------------------------------------------------------------*/
 #define MAX(a, b) ((a) > (b) ? (a) : (b)) /*!< Macro to get the maximum of two values. */
 
+/**
+ * @brief variable to enable alternancy between LEDs.
+ * 
+ */
+static bool led_state = false;
 /* Private functions */
 /**
  * @brief Parse the message received by the USART.
@@ -71,7 +76,6 @@ bool _parse_message(char *p_message, char *p_command, char *p_param){
     }
     return true;
 }
-static bool led_state = false;
 /**
  * @brief Set the next song to be played.
  * 
@@ -89,7 +93,7 @@ void _set_next_song(fsm_jukebox_t *p_fsm_jukebox){
     printf("Playing %s\n", p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name);
     fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
     fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
-    
+    // Se alterna la iluminación de los LEDs a cada melodia reproducida
     led_state = !led_state;  
     if (led_state) {
         port_led_turn_on(LED_0_ID);  
@@ -133,6 +137,7 @@ void _execute_command(fsm_jukebox_t *p_fsm_jukebox, char *p_command, char *p_par
             fsm_buzzer_set_melody(p_fsm_jukebox->p_fsm_buzzer, &p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx]);
             p_fsm_jukebox->p_melody= p_fsm_jukebox->melodies[p_fsm_jukebox->melody_idx].p_name;
             fsm_buzzer_set_action(p_fsm_jukebox->p_fsm_buzzer, PLAY);
+            // Se alterna la iluminación de los LEDs a cada melodia reproducida
             led_state = !led_state;  
             if (led_state) {
                 port_led_turn_on(LED_0_ID);  

@@ -26,38 +26,37 @@ void port_led_init(uint32_t led_id){
 }
 
 bool port_led_get(uint32_t led_id) {
-    // Creamos las máscaras según sea el LED0 o LED1
+    // Definimos las máscaras según sea el LED0 o LED1
     uint32_t IDR_MASK;
     if (led_id == LED_0_ID) {
         IDR_MASK = IDR5_MASK_LED0;
     } else if (led_id == LED_1_ID) {
         IDR_MASK = IDR5_MASK_LED1;
     }
-    // Leemos el valor del LED en IDR
     uint32_t current_value = (LED_0_GPIO->IDR & IDR_MASK);
     return current_value;
 }
 void port_led_turn_on(uint32_t led_id) {
-    // Creamos la máscara según sea el LED0 o LED1
+    // Definimos la máscara según sea el LED0 o LED1
     uint32_t ODR_MASK;
     if (led_id == LED_0_ID) {
         ODR_MASK = ODR5_MASK_LED0;
     } else if (led_id == LED_1_ID) {
         ODR_MASK = ODR5_MASK_LED1;
     }
-    // Encendemos el LED en ODR
+    // Se usa la GPIO del LED0 porque ambos para ambos es el mismo
     LED_0_GPIO->ODR |= ODR_MASK;
 }
 
 void port_led_turn_off(uint32_t led_id) {
-    // Creamos la máscara según sea el LED0 o LED1
+    // Definimos la máscara según sea el LED0 o LED1
     uint32_t ODR_MASK;
     if (led_id == LED_0_ID) {
         ODR_MASK = ODR5_MASK_LED0;
     } else if (led_id == LED_1_ID) {
         ODR_MASK = ODR5_MASK_LED1;
     }
-    // Apagamos el LED en ODR
+    // Se usa la GPIO del LED0 porque ambos para ambos es el mismo
     LED_0_GPIO->ODR &= ~ODR_MASK;
 }
 
